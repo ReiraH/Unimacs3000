@@ -10,6 +10,7 @@ namespace Unimacs_3000.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Username = User.Identity.Name;
             return View();
         }
 
