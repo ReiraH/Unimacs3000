@@ -7,26 +7,45 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-    <script>
-    function startTime() {
-    var today = new Date();
-    var h = today.getHours();
-    var m = today.getMinutes();
-    var s = today.getSeconds();
-    m = checkTime(m);
-    s = checkTime(s);
-    document.getElementById('txt').innerHTML =
-    h + ":" + m + ":" + s;
-    var t = setTimeout(startTime, 500);
-    }
-    function checkTime(i) {
-    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-    return i;
-    }
+    <script type="text/javascript">
+            function startTime() {
+                var today = new Date();
+                var h = today.getHours();
+                var m = today.getMinutes();
+                var s = today.getSeconds();
+                m = checkTime(m);
+                s = checkTime(s);
+                document.getElementById('txt').innerHTML =
+                    h + ":" + m + ":" + s;
+                var t = setTimeout(startTime, 500);
+            }
+            function checkTime(i) {
+                if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+                return i;
+            }
+    </script>
+
+    <script type="text/javascript">
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+
+            var today = dd + '/' + mm + '/' + yyyy;
+            document.getElementById("DATE").value = today;
     </script>
 
 </head>
-<body>
+<body onload="startTime()">
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -39,7 +58,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <!--NAME, CSHTML, FOLDER-->
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Simulatie", "Index", "Simulatie")</li>
+                    <li>@Html.ActionLink("Video", "Index", "Video")</li>
+                    <li>@Html.ActionLink("Radar", "Index", "Radar")</li>
+                    <li>@Html.ActionLink("Map", "Index", "Map")</li>
+                    <li>@Html.ActionLink("Sensordata", "Index", "Sensordata")</li>
+                    <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
@@ -48,9 +74,11 @@
         </div>
     </div>
     <div class="container body-content">
+        <h3> @DateTime.Now.ToString("dd-MMM-yyyy") <b id="txt"></b></h3>
+
         @RenderBody()
         <hr />
-        <footer>
+        <footer>p
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
