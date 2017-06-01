@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "View";
 }
-
 <h2>View</h2>
 
 <table class="table">
@@ -23,24 +22,25 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
 
-    long utcNowLongBack = BitConverter.ToInt64(item.timestamp.ToArray(), 0);
-    DateTime utcNowBack = DateTime.FromBinary(utcNowLongBack);
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.sensor_name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NMEA_code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.sensor_value)
-        </td>
-        <td>
-            @utcNowBack
-        </td>
-    </tr>
-}
+        long utcNowLongBack = BitConverter.ToInt64(item.timestamp.ToArray(), 0);
+        DateTime utcNowBack = DateTime.FromBinary(utcNowLongBack);
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.sensor_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NMEA_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sensor_value)
+            </td>
+            <td>
+                @utcNowBack
+            </td>
+        </tr>
+    }
 
 </table>

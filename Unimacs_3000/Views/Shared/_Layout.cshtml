@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jquery")
     <script type="text/javascript">
             function startTime() {
                 var today = new Date();
@@ -43,6 +43,33 @@
             document.getElementById("DATE").value = today;
     </script>
 
+    <script type="text/javascript">
+    $(document).ready(function () {
+        setTimeout(CheckStatus, 500);
+    });
+    function CheckStatus() {
+        var options = {};
+        options.url = '@Url.Action("OnChange", "ScreenSetting")';
+        options.type = "POST";
+        options.dataType = "json";
+        options.data = {"currentController" : window.location.pathname };
+        options.success = function (response) {
+            if (response.result == 'Redirect')
+            {
+                window.location.href = response.url;
+            }
+            else if (response.result == 'DoNothing')
+            {
+                setTimeout(CheckStatus, 500);
+            }
+        };
+        options.error = function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            alert(err.Message);
+        };
+        $.ajax(options)
+    }
+    </script>
 </head>
 <body onload="startTime()">
 

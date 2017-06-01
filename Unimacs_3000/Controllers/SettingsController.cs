@@ -11,9 +11,6 @@ namespace Unimacs_3000.Controllers
         // GET: Settings
         public ActionResult Index()
         {
-            //om te testen
-            // testen omdat je pas kan comitten naar git als je iets heb gewijzigd.
-            int i = 0;
             return View();
         }
 

@@ -14,10 +14,10 @@ namespace Unimacs_3000.Controllers
         // GET: Sensordata
         public ActionResult Index()
         {
+
             //laat index pagina zien
             return View(db.SensorDatas.ToList());
         }
-
         // GET: Sensordata/Details/5
         public ActionResult Details(int id)
         {
