@@ -151,38 +151,38 @@
     <Compile Include="Controllers\RadarController.cs" />
     <Compile Include="Controllers\SensordataController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Controllers\SimulatieController.cs" />
+    <Compile Include="Controllers\BoatControlController.cs" />
     <Compile Include="Controllers\VideoController.cs" />
     <Compile Include="Controllers\ScreenSettingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Page.cs">
-      <DependentUpon>UnimacsModel.tt</DependentUpon>
+      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Screen.cs">
-      <DependentUpon>UnimacsModel.tt</DependentUpon>
+      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ScreenSetting.cs">
-      <DependentUpon>UnimacsModel.tt</DependentUpon>
+      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SensorData.cs">
-      <DependentUpon>UnimacsModel.tt</DependentUpon>
+      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UnimacsModel.Context.cs">
+    <Compile Include="Models\UnimacsEntityModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UnimacsModel.Context.tt</DependentUpon>
+      <DependentUpon>UnimacsEntityModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UnimacsModel.cs">
+    <Compile Include="Models\UnimacsEntityModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UnimacsModel.tt</DependentUpon>
+      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UnimacsModel.Designer.cs">
+    <Compile Include="Models\UnimacsEntityModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UnimacsModel.edmx</DependentUpon>
+      <DependentUpon>UnimacsEntityModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -195,15 +195,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\UnimacsModel.Context.tt">
+    <Content Include="Models\UnimacsEntityModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UnimacsModel.edmx</DependentUpon>
-      <LastGenOutput>UnimacsModel.Context.cs</LastGenOutput>
+      <DependentUpon>UnimacsEntityModel.edmx</DependentUpon>
+      <LastGenOutput>UnimacsEntityModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\UnimacsModel.tt">
+    <Content Include="Models\UnimacsEntityModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UnimacsModel.edmx</DependentUpon>
-      <LastGenOutput>UnimacsModel.cs</LastGenOutput>
+      <DependentUpon>UnimacsEntityModel.edmx</DependentUpon>
+      <LastGenOutput>UnimacsEntityModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -218,12 +218,12 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <EntityDeploy Include="Models\UnimacsModel.edmx">
+    <EntityDeploy Include="Models\UnimacsEntityModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>UnimacsModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>UnimacsEntityModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\UnimacsModel.edmx.diagram">
-      <DependentUpon>UnimacsModel.edmx</DependentUpon>
+    <Content Include="Models\UnimacsEntityModel.edmx.diagram">
+      <DependentUpon>UnimacsEntityModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -258,14 +258,16 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Radar\Index.cshtml" />
-    <Content Include="Views\Settings\Index.cshtml" />
-    <Content Include="Views\Simulatie\Index.cshtml" />
+    <Content Include="Views\BoatControl\Index.cshtml" />
     <Content Include="Views\Video\Index.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <Content Include="Views\Sensordata\Index.cshtml" />
+    <Content Include="Views\Settings\_ScreenSetting.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Map\Index.cshtml" />
+    <Content Include="Views\Shared\_FullscreenLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

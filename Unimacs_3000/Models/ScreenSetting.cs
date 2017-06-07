@@ -11,7 +11,8 @@ namespace Unimacs_3000.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Web.Mvc;
+
     public partial class ScreenSetting
     {
         public int id { get; set; }
@@ -21,5 +22,7 @@ namespace Unimacs_3000.Models
     
         public virtual Page Page { get; set; }
         public virtual Screen Screen { get; set; }
+
+        public List<SelectListItem> SelectListItems = new List<SelectListItem>();
     }
 }

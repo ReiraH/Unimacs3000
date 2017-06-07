@@ -27,7 +27,7 @@ namespace Unimacs_3000.Models
     
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<Screen> Screens { get; set; }
-        public virtual DbSet<SensorData> SensorDatas { get; set; }
         public virtual DbSet<ScreenSetting> ScreenSettings { get; set; }
+        public virtual DbSet<SensorData> SensorDatas { get; set; }
     }
 }
