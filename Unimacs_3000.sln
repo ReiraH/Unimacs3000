@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unimacs_3000", "Unimacs_3000\Unimacs_3000.csproj", "{C32629AB-BA04-4F85-8010-B3BFE84AD83F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Websocket", "Websocket\Websocket.csproj", "{056C0A56-B17B-4CB8-8972-D7B0D9EA4F81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialread", "Serialread\Serialread.csproj", "{BFCDDF14-21C2-4EA0-8C96-CF829B9D92C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{056C0A56-B17B-4CB8-8972-D7B0D9EA4F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{056C0A56-B17B-4CB8-8972-D7B0D9EA4F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{056C0A56-B17B-4CB8-8972-D7B0D9EA4F81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFCDDF14-21C2-4EA0-8C96-CF829B9D92C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFCDDF14-21C2-4EA0-8C96-CF829B9D92C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFCDDF14-21C2-4EA0-8C96-CF829B9D92C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCDDF14-21C2-4EA0-8C96-CF829B9D92C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
