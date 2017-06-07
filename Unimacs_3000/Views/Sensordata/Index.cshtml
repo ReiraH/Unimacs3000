@@ -24,9 +24,7 @@
 
     @foreach (var item in Model)
     {
-
-        long utcNowLongBack = BitConverter.ToInt64(item.timestamp.ToArray(), 0);
-        DateTime utcNowBack = DateTime.FromBinary(utcNowLongBack);
+        DateTime utcNowBack = DateTime.FromBinary(BitConverter.ToInt64(item.timestamp, 0));
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.sensor_name)

@@ -18,11 +18,6 @@ namespace Unimacs_3000.Controllers
             //laat index pagina zien
             return View(db.SensorDatas.ToList());
         }
-        // GET: Sensordata/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         // GET: Sensordata/Create
         public ActionResult Create()
@@ -59,28 +54,6 @@ namespace Unimacs_3000.Controllers
             try
             {
                 // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Sensordata/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Sensordata/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
             }

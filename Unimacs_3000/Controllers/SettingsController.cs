@@ -1,89 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Unimacs_3000.Models;
 
 namespace Unimacs_3000.Controllers
 {
     public class SettingsController : Controller
     {
+        UnimacsContext db = new UnimacsContext();
+
         // GET: Settings
         public ActionResult Index()
         {
-            return View();
+            foreach(ScreenSetting ss in db.ScreenSettings.ToList())
+            {
+                List<SelectListItem> selectList = new List<SelectListItem>();
+                foreach (Page p in db.Pages.ToList())
+                {
+                    selectList.Add(new SelectListItem { Text = p.page_name, Value = p.id.ToString(), Selected = (ss.page_id == p.id)});
+                }
+                ss.SelectListItems = selectList;
+            }
+            return View(db.ScreenSettings.ToList());
         }
 
-        // GET: Settings/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Settings/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Settings/Create
+        // POST: Settings/Update
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Index(FormCollection collection)
         {
             try
             {
-                // TODO: Add insert logic here
+                List<String> screenSettingIds = Request.Form["id"].Split(',').ToList();
+                List<String> screenIds = Request.Form["screen_id"].Split(',').ToList();
+                List<String> pageIds = Request.Form["page_id"].Split(',').ToList();
 
-                return RedirectToAction("Index");
+                for(int i = 0; i < screenSettingIds.Count(); i++)
+                {
+                    int id = 0;
+                    int pageId = 0;
+                    int screenId = 0;
+                    Int32.TryParse(screenSettingIds[i], out id);
+                    Int32.TryParse(pageIds[i], out pageId);
+                    Int32.TryParse(screenIds[i], out screenId);
+
+                    ScreenSetting screenSetting = db.ScreenSettings.Find(id);
+                    screenSetting.Page = db.Pages.Find(pageId);
+                    screenSetting.Screen = db.Screens.Find(screenId);
+                    screenSetting.timestamp = BitConverter.GetBytes(DateTime.Now.Ticks);
+                    db.Entry(screenSetting).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
-            catch
+            catch(Exception e)
             {
-                return View();
+                Console.WriteLine(e.Message);
             }
-        }
-
-        // GET: Settings/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Settings/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Settings/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Settings/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index", "Settings");
         }
     }
 }

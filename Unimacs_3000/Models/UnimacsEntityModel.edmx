@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Unimacs_3000.Models.UnimacsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="UnimacsContextModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Pages">
           <Key>
             <PropertyRef Name="id" />
@@ -19,8 +19,6 @@
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="computer_name" Type="nvarchar" MaxLength="150" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'unimacs3000db.dbo.ScreenSettings' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ScreenSettings">
           <Key>
             <PropertyRef Name="id" />
@@ -64,18 +62,11 @@ warning 6002: The table/view 'unimacs3000db.dbo.ScreenSettings' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Unimacs_3000ModelsUnimacsModelStoreContainer">
+        <EntityContainer Name="UnimacsContextModelStoreContainer">
           <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Screens" EntityType="Self.Screens" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScreenSettings" EntityType="Self.ScreenSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorData" EntityType="Self.SensorData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ScreenSettings" EntityType="Self.ScreenSettings" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ScreenSettings].[id] AS [id], 
-    [ScreenSettings].[timestamp] AS [timestamp], 
-    [ScreenSettings].[page_id] AS [page_id], 
-    [ScreenSettings].[screen_id] AS [screen_id]
-    FROM [dbo].[ScreenSettings] AS [ScreenSettings]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_ScreenSettings_Pages" Association="Self.FK_ScreenSettings_Pages">
             <End Role="Pages" EntitySet="Pages" />
             <End Role="ScreenSettings" EntitySet="ScreenSettings" />
@@ -89,7 +80,7 @@ warning 6002: The table/view 'unimacs3000db.dbo.ScreenSettings' does not have a 
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="Unimacs_3000.Models.UnimacsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="UnimacsContextModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Page">
           <Key>
             <PropertyRef Name="id" />
@@ -106,16 +97,6 @@ warning 6002: The table/view 'unimacs3000db.dbo.ScreenSettings' does not have a 
           <Property Name="computer_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="ScreenSettings" Relationship="Self.FK_ScreenSettings_Screens" FromRole="Screens" ToRole="ScreenSettings" />
         </EntityType>
-        <EntityType Name="SensorData">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="sensor_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NMEA_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="sensor_value" Type="Double" Nullable="false" />
-          <Property Name="timestamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
         <EntityType Name="ScreenSetting">
           <Key>
             <PropertyRef Name="id" />
@@ -126,6 +107,16 @@ warning 6002: The table/view 'unimacs3000db.dbo.ScreenSettings' does not have a 
           <Property Name="screen_id" Type="Int32" />
           <NavigationProperty Name="Page" Relationship="Self.FK_ScreenSettings_Pages" FromRole="ScreenSettings" ToRole="Pages" />
           <NavigationProperty Name="Screen" Relationship="Self.FK_ScreenSettings_Screens" FromRole="ScreenSettings" ToRole="Screens" />
+        </EntityType>
+        <EntityType Name="SensorData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="sensor_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NMEA_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sensor_value" Type="Double" Nullable="false" />
+          <Property Name="timestamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <Association Name="FK_ScreenSettings_Pages">
           <End Role="Pages" Type="Self.Page" Multiplicity="0..1" />
@@ -154,8 +145,8 @@ warning 6002: The table/view 'unimacs3000db.dbo.ScreenSettings' does not have a 
         <EntityContainer Name="UnimacsContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Pages" EntityType="Self.Page" />
           <EntitySet Name="Screens" EntityType="Self.Screen" />
-          <EntitySet Name="SensorDatas" EntityType="Self.SensorData" />
           <EntitySet Name="ScreenSettings" EntityType="Self.ScreenSetting" />
+          <EntitySet Name="SensorDatas" EntityType="Self.SensorData" />
           <AssociationSet Name="FK_ScreenSettings_Pages" Association="Self.FK_ScreenSettings_Pages">
             <End Role="Pages" EntitySet="Pages" />
             <End Role="ScreenSettings" EntitySet="ScreenSettings" />
@@ -170,9 +161,9 @@ warning 6002: The table/view 'unimacs3000db.dbo.ScreenSettings' does not have a 
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Unimacs_3000ModelsUnimacsModelStoreContainer" CdmEntityContainer="UnimacsContext">
+        <EntityContainerMapping StorageEntityContainer="UnimacsContextModelStoreContainer" CdmEntityContainer="UnimacsContext">
           <EntitySetMapping Name="Pages">
-            <EntityTypeMapping TypeName="Unimacs_3000.Models.UnimacsModel.Page">
+            <EntityTypeMapping TypeName="UnimacsContextModel.Page">
               <MappingFragment StoreEntitySet="Pages">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="page_name" ColumnName="page_name" />
@@ -180,31 +171,31 @@ warning 6002: The table/view 'unimacs3000db.dbo.ScreenSettings' does not have a 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Screens">
-            <EntityTypeMapping TypeName="Unimacs_3000.Models.UnimacsModel.Screen">
+            <EntityTypeMapping TypeName="UnimacsContextModel.Screen">
               <MappingFragment StoreEntitySet="Screens">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="computer_name" ColumnName="computer_name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ScreenSettings">
+            <EntityTypeMapping TypeName="UnimacsContextModel.ScreenSetting">
+              <MappingFragment StoreEntitySet="ScreenSettings">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="page_id" ColumnName="page_id" />
+                <ScalarProperty Name="screen_id" ColumnName="screen_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SensorDatas">
-            <EntityTypeMapping TypeName="Unimacs_3000.Models.UnimacsModel.SensorData">
+            <EntityTypeMapping TypeName="UnimacsContextModel.SensorData">
               <MappingFragment StoreEntitySet="SensorData">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sensor_name" ColumnName="sensor_name" />
                 <ScalarProperty Name="NMEA_code" ColumnName="NMEA_code" />
                 <ScalarProperty Name="sensor_value" ColumnName="sensor_value" />
                 <ScalarProperty Name="timestamp" ColumnName="timestamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ScreenSettings">
-            <EntityTypeMapping TypeName="Unimacs_3000.Models.UnimacsModel.ScreenSetting">
-              <MappingFragment StoreEntitySet="ScreenSettings">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
-                <ScalarProperty Name="page_id" ColumnName="page_id" />
-                <ScalarProperty Name="screen_id" ColumnName="screen_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

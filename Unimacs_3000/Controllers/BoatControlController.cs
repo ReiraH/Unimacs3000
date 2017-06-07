@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Unimacs_3000.Controllers
 {
-    public class SimulatieController : Controller
+    public class BoatControlController : Controller
     {
         // GET: Simulatie
         public ActionResult Index()

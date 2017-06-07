@@ -45,6 +45,8 @@
 
     <script type="text/javascript">
     $(document).ready(function () {
+        var heights = window.innerHeight - 50;
+        document.getElementById("iframeMap").style.height = heights + "px" ;
         setTimeout(CheckStatus, 500);
     });
     function CheckStatus() {
@@ -96,13 +98,10 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        <h3> @DateTime.Now.ToString("dd-MMM-yyyy") <b id="txt"></b></h3>
 
-        @RenderBody()
-        <footer>
-        </footer>
-    </div>
+    @RenderBody()
+    <footer>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

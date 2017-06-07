@@ -20,6 +20,10 @@ namespace Unimacs_3000.Controllers
         {
             String pcName = User.Identity.Name;
             pcName = pcName.Split('\\')[0];
+            if(pcName.Equals("DESKTOP-MUE12OA"))
+            {
+                pcName = "unimacs1";
+            }
             var view = from p in db.ScreenSettings
                        where p.Screen.computer_name == pcName
                        select p.Page;
