@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Unimacs_3000.Models.UnimacsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Pages">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="page_name" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Screens">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="computer_name" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'unimacs3000db.dbo.ScreenSettings' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ScreenSettings">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="timestamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="page_id" Type="int" />
+          <Property Name="screen_id" Type="int" />
+        </EntityType>
+        <EntityType Name="SensorData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="sensor_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="NMEA_code" Type="nvarchar" MaxLength="50" />
+          <Property Name="sensor_value" Type="float" Nullable="false" />
+          <Property Name="timestamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ScreenSettings_Pages">
+          <End Role="Pages" Type="Self.Pages" Multiplicity="0..1" />
+          <End Role="ScreenSettings" Type="Self.ScreenSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pages">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ScreenSettings">
+              <PropertyRef Name="page_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScreenSettings_Screens">
+          <End Role="Screens" Type="Self.Screens" Multiplicity="0..1" />
+          <End Role="ScreenSettings" Type="Self.ScreenSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screens">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ScreenSettings">
+              <PropertyRef Name="screen_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Unimacs_3000ModelsUnimacsModelStoreContainer">
+          <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Screens" EntityType="Self.Screens" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SensorData" EntityType="Self.SensorData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScreenSettings" EntityType="Self.ScreenSettings" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ScreenSettings].[id] AS [id], 
+    [ScreenSettings].[timestamp] AS [timestamp], 
+    [ScreenSettings].[page_id] AS [page_id], 
+    [ScreenSettings].[screen_id] AS [screen_id]
+    FROM [dbo].[ScreenSettings] AS [ScreenSettings]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ScreenSettings_Pages" Association="Self.FK_ScreenSettings_Pages">
+            <End Role="Pages" EntitySet="Pages" />
+            <End Role="ScreenSettings" EntitySet="ScreenSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenSettings_Screens" Association="Self.FK_ScreenSettings_Screens">
+            <End Role="Screens" EntitySet="Screens" />
+            <End Role="ScreenSettings" EntitySet="ScreenSettings" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Unimacs_3000.Models.UnimacsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Page">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="page_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ScreenSettings" Relationship="Self.FK_ScreenSettings_Pages" FromRole="Pages" ToRole="ScreenSettings" />
+        </EntityType>
+        <EntityType Name="Screen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="computer_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ScreenSettings" Relationship="Self.FK_ScreenSettings_Screens" FromRole="Screens" ToRole="ScreenSettings" />
+        </EntityType>
+        <EntityType Name="SensorData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="sensor_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NMEA_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sensor_value" Type="Double" Nullable="false" />
+          <Property Name="timestamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ScreenSetting">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="timestamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="page_id" Type="Int32" />
+          <Property Name="screen_id" Type="Int32" />
+          <NavigationProperty Name="Page" Relationship="Self.FK_ScreenSettings_Pages" FromRole="ScreenSettings" ToRole="Pages" />
+          <NavigationProperty Name="Screen" Relationship="Self.FK_ScreenSettings_Screens" FromRole="ScreenSettings" ToRole="Screens" />
+        </EntityType>
+        <Association Name="FK_ScreenSettings_Pages">
+          <End Role="Pages" Type="Self.Page" Multiplicity="0..1" />
+          <End Role="ScreenSettings" Type="Self.ScreenSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pages">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ScreenSettings">
+              <PropertyRef Name="page_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScreenSettings_Screens">
+          <End Role="Screens" Type="Self.Screen" Multiplicity="0..1" />
+          <End Role="ScreenSettings" Type="Self.ScreenSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screens">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ScreenSettings">
+              <PropertyRef Name="screen_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UnimacsContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Pages" EntityType="Self.Page" />
+          <EntitySet Name="Screens" EntityType="Self.Screen" />
+          <EntitySet Name="SensorDatas" EntityType="Self.SensorData" />
+          <EntitySet Name="ScreenSettings" EntityType="Self.ScreenSetting" />
+          <AssociationSet Name="FK_ScreenSettings_Pages" Association="Self.FK_ScreenSettings_Pages">
+            <End Role="Pages" EntitySet="Pages" />
+            <End Role="ScreenSettings" EntitySet="ScreenSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScreenSettings_Screens" Association="Self.FK_ScreenSettings_Screens">
+            <End Role="Screens" EntitySet="Screens" />
+            <End Role="ScreenSettings" EntitySet="ScreenSettings" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Unimacs_3000ModelsUnimacsModelStoreContainer" CdmEntityContainer="UnimacsContext">
+          <EntitySetMapping Name="Pages">
+            <EntityTypeMapping TypeName="Unimacs_3000.Models.UnimacsModel.Page">
+              <MappingFragment StoreEntitySet="Pages">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="page_name" ColumnName="page_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Screens">
+            <EntityTypeMapping TypeName="Unimacs_3000.Models.UnimacsModel.Screen">
+              <MappingFragment StoreEntitySet="Screens">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="computer_name" ColumnName="computer_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SensorDatas">
+            <EntityTypeMapping TypeName="Unimacs_3000.Models.UnimacsModel.SensorData">
+              <MappingFragment StoreEntitySet="SensorData">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="sensor_name" ColumnName="sensor_name" />
+                <ScalarProperty Name="NMEA_code" ColumnName="NMEA_code" />
+                <ScalarProperty Name="sensor_value" ColumnName="sensor_value" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScreenSettings">
+            <EntityTypeMapping TypeName="Unimacs_3000.Models.UnimacsModel.ScreenSetting">
+              <MappingFragment StoreEntitySet="ScreenSettings">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="page_id" ColumnName="page_id" />
+                <ScalarProperty Name="screen_id" ColumnName="screen_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
