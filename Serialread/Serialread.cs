@@ -5,7 +5,7 @@ public class Serialread
    
 	public Serialread(String com)
 	{
-        Boat     
+        
         StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
         Thread readThread = new Thread(Read);
         readThread.Start();
