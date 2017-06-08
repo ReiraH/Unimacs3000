@@ -157,32 +157,33 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DistinctSensordataComparer.cs" />
     <Compile Include="Models\Page.cs">
-      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
+      <DependentUpon>UnimacsDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Screen.cs">
-      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
+      <DependentUpon>UnimacsDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ScreenSetting.cs">
-      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
+      <DependentUpon>UnimacsDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SensorData.cs">
-      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
+      <DependentUpon>UnimacsDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UnimacsEntityModel.Context.cs">
+    <Compile Include="Models\UnimacsDataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UnimacsEntityModel.Context.tt</DependentUpon>
+      <DependentUpon>UnimacsDataModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UnimacsEntityModel.cs">
+    <Compile Include="Models\UnimacsDataModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UnimacsEntityModel.tt</DependentUpon>
+      <DependentUpon>UnimacsDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UnimacsEntityModel.Designer.cs">
+    <Compile Include="Models\UnimacsDataModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UnimacsEntityModel.edmx</DependentUpon>
+      <DependentUpon>UnimacsDataModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -195,15 +196,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\UnimacsEntityModel.Context.tt">
+    <Content Include="Models\UnimacsDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UnimacsEntityModel.edmx</DependentUpon>
-      <LastGenOutput>UnimacsEntityModel.Context.cs</LastGenOutput>
+      <DependentUpon>UnimacsDataModel.edmx</DependentUpon>
+      <LastGenOutput>UnimacsDataModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\UnimacsEntityModel.tt">
+    <Content Include="Models\UnimacsDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UnimacsEntityModel.edmx</DependentUpon>
-      <LastGenOutput>UnimacsEntityModel.cs</LastGenOutput>
+      <DependentUpon>UnimacsDataModel.edmx</DependentUpon>
+      <LastGenOutput>UnimacsDataModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -218,13 +219,14 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <EntityDeploy Include="Models\UnimacsEntityModel.edmx">
+    <EntityDeploy Include="Models\UnimacsDataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>UnimacsEntityModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>UnimacsDataModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\UnimacsEntityModel.edmx.diagram">
-      <DependentUpon>UnimacsEntityModel.edmx</DependentUpon>
+    <Content Include="Models\UnimacsDataModel.edmx.diagram">
+      <DependentUpon>UnimacsDataModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />

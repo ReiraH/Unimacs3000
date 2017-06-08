@@ -3,8 +3,6 @@
 @{
     ViewBag.Title = "View";
 }
-<h2>View</h2>
-
 <table class="table">
     <tr>
         <th>
@@ -24,7 +22,6 @@
 
     @foreach (var item in Model)
     {
-        DateTime utcNowBack = DateTime.FromBinary(BitConverter.ToInt64(item.timestamp, 0));
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.sensor_name)
@@ -36,7 +33,7 @@
                 @Html.DisplayFor(modelItem => item.sensor_value)
             </td>
             <td>
-                @utcNowBack
+                @Html.DisplayFor(modelItem => item.timestamp)
             </td>
         </tr>
     }

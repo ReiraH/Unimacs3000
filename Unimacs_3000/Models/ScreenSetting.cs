@@ -16,7 +16,7 @@ namespace Unimacs_3000.Models
     public partial class ScreenSetting
     {
         public int id { get; set; }
-        public byte[] timestamp { get; set; }
+        public System.DateTime timestamp { get; set; }
         public Nullable<int> page_id { get; set; }
         public Nullable<int> screen_id { get; set; }
     
