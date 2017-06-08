@@ -10,9 +10,11 @@ namespace Websocket
     {
         static void Main(String[] Args)
         {
+
             Console.WriteLine("Starting websocket...");
-            Websocket websocket = new Websocket("https://waterknakkers.niekeichner.nl");
-            Console.WriteLine("Socket started.");
+            var websocket = new WebsocketClientAuth("https://waterknakkers.niekeichner.nl");
+
+            //websocket.ControlBoat(0.3, 0.4, 0.6);
 
             Console.ReadKey();
             websocket.Close();

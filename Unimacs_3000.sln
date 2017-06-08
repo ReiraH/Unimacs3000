@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Websocket", "Websocket\Webs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialread", "Serialread\Serialread.csproj", "{BFCDDF14-21C2-4EA0-8C96-CF829B9D92C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainApp", "MainApp\MainApp.csproj", "{E0B4965D-1401-4221-A069-02D56AA00849}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BFCDDF14-21C2-4EA0-8C96-CF829B9D92C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFCDDF14-21C2-4EA0-8C96-CF829B9D92C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFCDDF14-21C2-4EA0-8C96-CF829B9D92C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0B4965D-1401-4221-A069-02D56AA00849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0B4965D-1401-4221-A069-02D56AA00849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0B4965D-1401-4221-A069-02D56AA00849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0B4965D-1401-4221-A069-02D56AA00849}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

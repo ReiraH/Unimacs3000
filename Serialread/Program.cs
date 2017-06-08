@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Serialread
 {
-    class Program
+    public class Program
     {
 
         static void Main(string[] args)
-        {
+        {  
             
             StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
             Thread readThread = new Thread(Read);
