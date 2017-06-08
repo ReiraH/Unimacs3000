@@ -1,6 +1,0 @@
-c:\users\rbuit\documents\visual studio 2015\Projects\serialread\serialread\bin\Debug\serialread.exe.config
-C:\Users\rbuit\documents\visual studio 2015\Projects\serialread\serialread\bin\Debug\serialread.exe
-C:\Users\rbuit\documents\visual studio 2015\Projects\serialread\serialread\bin\Debug\serialread.pdb
-C:\Users\rbuit\documents\visual studio 2015\Projects\serialread\serialread\obj\Debug\serialread.csprojResolveAssemblyReference.cache
-C:\Users\rbuit\documents\visual studio 2015\Projects\serialread\serialread\obj\Debug\serialread.exe
-C:\Users\rbuit\documents\visual studio 2015\Projects\serialread\serialread\obj\Debug\serialread.pdb

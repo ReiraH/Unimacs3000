@@ -9,22 +9,27 @@ using System.Web.UI.WebControls.WebParts;
 
 namespace Websocket
 {
-    class Websocket
+    class Websocket : IWebsocket
     {
         private class BoatreqMessage
         {
             public String id = "das09sad90ds90";
             public String name = "De henk boot";
-        } 
-        static void Main(string[] args)
+        }
+
+        private Socket socket;
+
+        public Websocket(String adress)
         {
-            Socket socket = IO.Socket("https://waterknakkers.niekeichner.nl");
+            socket = IO.Socket(adress);
             socket.On(Socket.EVENT_CONNECT, () =>
             {
                 Console.WriteLine("Connected");
-               
-                String json = JsonConvert.SerializeObject(new BoatreqMessage());
-                Console.WriteLine(json);
+                socket.Emit("getBoats");
+                
+                //code to subscribe as a boat on the server, for initial testing
+                //String json = JsonConvert.SerializeObject(new BoatreqMessage());
+                //Console.WriteLine(json);
                 //socket.Emit("boatreq", json);
             });
 
@@ -41,16 +46,37 @@ namespace Websocket
             });
 
 
-            socket.On("controller", (data) =>
+            socket.On("getBoats", (data) =>
             {
+                Console.WriteLine("Message received");
                 Console.WriteLine(data);
             });
 
+            socket.On("boatConnected", (data) =>
+            {
+                Console.WriteLine("Message received");
+                Console.WriteLine(data);
+            });
 
-            Console.ReadKey();
-            socket.Close();
-
+            socket.On("boatDisconnected", (data) =>
+            {
+                Console.WriteLine("Message received");
+                Console.WriteLine(data);
+            });
 
         }
+
+
+        public void Close()
+        {
+            socket.Close();
+        }
+
+        void IWebsocket.Send(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        
     }
 }
