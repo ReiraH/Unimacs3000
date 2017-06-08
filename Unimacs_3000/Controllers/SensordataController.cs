@@ -18,7 +18,7 @@ namespace Unimacs_3000.Controllers
         public ActionResult Index(List<SensorData> data)
         {
             //laat index pagina zien
-            return View(db.SensorDatas.OrderByDescending(sd => sd.timestamp).Distinct(new DistinctSensordataComparer()).ToList());
+            return View(db.SensorDatas.OrderByDescending(sd => sd.timestamp).ToList().Distinct(new DistinctSensordataComparer()).ToList());
         }
     }
 }
