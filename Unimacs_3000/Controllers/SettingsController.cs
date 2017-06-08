@@ -50,7 +50,6 @@ namespace Unimacs_3000.Controllers
                     ScreenSetting screenSetting = db.ScreenSettings.Find(id);
                     screenSetting.Page = db.Pages.Find(pageId);
                     screenSetting.Screen = db.Screens.Find(screenId);
-                    screenSetting.timestamp = BitConverter.GetBytes(DateTime.Now.Ticks);
                     db.Entry(screenSetting).State = EntityState.Modified;
                     db.SaveChanges();
                 }

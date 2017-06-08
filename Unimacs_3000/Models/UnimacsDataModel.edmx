@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="UnimacsContextModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="UnimacsModelNamespace.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Pages">
           <Key>
             <PropertyRef Name="id" />
@@ -24,7 +24,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="timestamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="timestamp" Type="datetime" Nullable="false" />
           <Property Name="page_id" Type="int" />
           <Property Name="screen_id" Type="int" />
         </EntityType>
@@ -32,11 +32,11 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="sensor_name" Type="nvarchar" MaxLength="50" />
           <Property Name="NMEA_code" Type="nvarchar" MaxLength="50" />
           <Property Name="sensor_value" Type="float" Nullable="false" />
-          <Property Name="timestamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="timestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_ScreenSettings_Pages">
           <End Role="Pages" Type="Self.Pages" Multiplicity="0..1" />
@@ -62,7 +62,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="UnimacsContextModelStoreContainer">
+        <EntityContainer Name="UnimacsModelNamespaceStoreContainer">
           <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Screens" EntityType="Self.Screens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScreenSettings" EntityType="Self.ScreenSettings" Schema="dbo" store:Type="Tables" />
@@ -76,11 +76,10 @@
             <End Role="ScreenSettings" EntitySet="ScreenSettings" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="UnimacsContextModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="UnimacsModelNamespace" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Page">
           <Key>
             <PropertyRef Name="id" />
@@ -102,7 +101,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="timestamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="page_id" Type="Int32" />
           <Property Name="screen_id" Type="Int32" />
           <NavigationProperty Name="Page" Relationship="Self.FK_ScreenSettings_Pages" FromRole="ScreenSettings" ToRole="Pages" />
@@ -116,7 +115,7 @@
           <Property Name="sensor_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="NMEA_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="sensor_value" Type="Double" Nullable="false" />
-          <Property Name="timestamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <Association Name="FK_ScreenSettings_Pages">
           <End Role="Pages" Type="Self.Page" Multiplicity="0..1" />
@@ -161,9 +160,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="UnimacsContextModelStoreContainer" CdmEntityContainer="UnimacsContext">
+        <EntityContainerMapping StorageEntityContainer="UnimacsModelNamespaceStoreContainer" CdmEntityContainer="UnimacsContext">
           <EntitySetMapping Name="Pages">
-            <EntityTypeMapping TypeName="UnimacsContextModel.Page">
+            <EntityTypeMapping TypeName="UnimacsModelNamespace.Page">
               <MappingFragment StoreEntitySet="Pages">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="page_name" ColumnName="page_name" />
@@ -171,7 +170,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Screens">
-            <EntityTypeMapping TypeName="UnimacsContextModel.Screen">
+            <EntityTypeMapping TypeName="UnimacsModelNamespace.Screen">
               <MappingFragment StoreEntitySet="Screens">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="computer_name" ColumnName="computer_name" />
@@ -179,7 +178,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ScreenSettings">
-            <EntityTypeMapping TypeName="UnimacsContextModel.ScreenSetting">
+            <EntityTypeMapping TypeName="UnimacsModelNamespace.ScreenSetting">
               <MappingFragment StoreEntitySet="ScreenSettings">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="timestamp" ColumnName="timestamp" />
@@ -189,7 +188,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SensorDatas">
-            <EntityTypeMapping TypeName="UnimacsContextModel.SensorData">
+            <EntityTypeMapping TypeName="UnimacsModelNamespace.SensorData">
               <MappingFragment StoreEntitySet="SensorData">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sensor_name" ColumnName="sensor_name" />

@@ -18,6 +18,6 @@ namespace Unimacs_3000.Models
         public string sensor_name { get; set; }
         public string NMEA_code { get; set; }
         public double sensor_value { get; set; }
-        public byte[] timestamp { get; set; }
+        public System.DateTime timestamp { get; set; }
     }
 }
