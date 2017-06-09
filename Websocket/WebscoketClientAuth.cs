@@ -14,27 +14,14 @@ namespace Websocket
 {
     public class WebsocketClientAuth : IWebsocket
     {
-        private class BoatreqMessage
-        {
-            public String id = "das09sad90ds90";
-            public String name = "De henk boot";
-        }
-
-        private Socket socket;
-        private static readonly HttpClient client = new HttpClient();
+       private Socket socket;
 
 
         public WebsocketClientAuth(String adress)
         {
-            /*
-            //Create Socket options
-            var option = new IO.Options
-            {
-                
-            }
-            */
 
-            string GetResponseString()
+
+            string getToken()
             {
                 var httpClient = new HttpClient();
 
@@ -51,17 +38,16 @@ namespace Websocket
             }
 
 
-            var token = GetResponseString();
-
-
-
-
+            var token = getToken();
             socket = IO.Socket(adress);
+
+
             socket.On(Socket.EVENT_CONNECT, () =>
             {
                 Console.WriteLine("Connected, sending token for authentication: "+token);
                 socket.Emit("authentication", token);
              });
+
 
             socket.On("authenticated", () =>
             {
@@ -72,20 +58,7 @@ namespace Websocket
             });
 
 
-
-            socket.On(Socket.EVENT_DISCONNECT, () =>
-            {
-                Console.WriteLine("Disconnected");
-                socket.Close();
-
-            });
-
-            socket.On(Socket.EVENT_CONNECT_TIMEOUT, () =>
-            {
-                Console.WriteLine("Can't connect to the server");
-            });
-
-
+            
             socket.On("getBoats", (data) =>
             {
                 Console.WriteLine("Message received");
@@ -102,6 +75,20 @@ namespace Websocket
             {
                 Console.WriteLine("Message received");
                 Console.WriteLine(data);
+            });
+
+
+
+            socket.On(Socket.EVENT_DISCONNECT, () =>
+            {
+                Console.WriteLine("Disconnected");
+                socket.Close();
+
+            });
+
+            socket.On(Socket.EVENT_CONNECT_TIMEOUT, () =>
+            {
+                Console.WriteLine("Can't connect to the server");
             });
 
         }
