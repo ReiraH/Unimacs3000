@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO.Ports;
+using System.Linq;
+using System.Threading;
+
 
 public class Serialread
 {
-   
-	public Serialread(String com)
-	{
+     Boatcontrol boat;
+
+    public Serialread()
+    {
         
         StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
         Thread readThread = new Thread(Read);
@@ -13,7 +19,7 @@ public class Serialread
 
     public static void Read()
     {
-        SerialPort serial = new SerialPort(com, 9600);
+        SerialPort serial = new SerialPort("COM4", 9600);
         Boolean _continue = true;
         string serialdata;
 
@@ -33,11 +39,12 @@ public class Serialread
 
     public static void joyStickControl(String s)// joystick heeft orgineel waarde x-880 tot 1000,-770 tot 900
     {
+        Boatcontrol boatcontrol;
         String _xMovement;
         String _yMovement;
         float xMovement;
         float yMovement;
-
+        
 
 
 
@@ -46,14 +53,7 @@ public class Serialread
         _xMovement = xyPosition[1];
         xMovement = (float)Convert.ToDouble(_xMovement);
         yMovement = (float)Convert.ToDouble(_yMovement);
-        
-        //Console.WriteLine(" xmove is: " + xMovement + "ymove is :" + yMovement);
-        //Console.WriteLine(xyPosition[1]+" "+xyPosition[2]);
-
-        /*   
-        x tussen 0 en 1920  orgineel -880 tot 1000
-         y tussen 0 en 1630  orgineel -770 tot 900
-        */
+        boatcontrol = new Boatcontrol((xMovement + 800) / 1680, (yMovement + 880) / 1930);// checken ofdit werkt
         //boatControl((xMovement + 800) / 1680, (yMovement + 880) / 1930); // stuurt het getal tussen 0 en 1
     }
 

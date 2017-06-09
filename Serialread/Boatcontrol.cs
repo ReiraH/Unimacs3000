@@ -2,8 +2,8 @@
 
 public class Boatcontrol
 {
-	public Boatcontrol(double xMovement, double yMovement)
-	{
+    public Boatcontrol(double xMovement, double yMovement)
+    {
         double steer = Math.Round(yMovement, 1);
         double motor1 = Math.Round(xMovement, 1);
         double motor2 = motor1;
