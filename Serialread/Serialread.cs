@@ -7,11 +7,11 @@ using System.Threading;
 
 public class Serialread
 {
-     Boatcontrol boat;
+    Boatcontrol boat;
 
     public Serialread()
     {
-        
+        //blaa
         StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
         Thread readThread = new Thread(Read);
         readThread.Start();
@@ -44,7 +44,7 @@ public class Serialread
         String _yMovement;
         float xMovement;
         float yMovement;
-        
+
 
 
 
