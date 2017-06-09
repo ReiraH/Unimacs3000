@@ -8,52 +8,57 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls.WebParts;
 
+using System.Net.Http;
+
 namespace Websocket
 {
-    public class Websocket : IWebsocket
+    public class WebsocketClientAuth : IWebsocket
     {
-        private class BoatreqMessage
-        {
-            public String id = "das09sad90ds90";
-            public String name = "De henk boot";
-        }
+       private Socket socket;
 
-        private Socket socket;
 
-        public Websocket(String adress)
+        public WebsocketClientAuth(String adress)
         {
-            /*
-            //Create Socket options
-            var option = new IO.Options
+
+
+            string getToken()
             {
-                
+                var httpClient = new HttpClient();
+
+                var parameters = new Dictionary<string, string>
+                {
+                    { "username", "scheepsbrug" },
+                    { "password", "unimax" }
+                };
+
+                var resp =  httpClient.PostAsync("https://waterknakkers.niekeichner.nl/login", new FormUrlEncodedContent(parameters)).Result;
+                var contents = resp.Content.ReadAsStringAsync().Result;
+
+                return contents;
             }
-            */
+
+
+            var token = getToken();
             socket = IO.Socket(adress);
+
+
             socket.On(Socket.EVENT_CONNECT, () =>
             {
-                Console.WriteLine("Connected");
+                Console.WriteLine("Connected, sending token for authentication: "+token);
+                socket.Emit("authentication", token);
+             });
+
+
+            socket.On("authenticated", () =>
+            {
+                Console.WriteLine("Ma Boi i'm in");
                 socket.Emit("getBoats");
-                
-                //code to subscribe as a boat on the server, for initial testing
-                //String json = JsonConvert.SerializeObject(new BoatreqMessage());
-                //Console.WriteLine(json);
-                //socket.Emit("boatreq", json);
-            });
 
-            socket.On(Socket.EVENT_DISCONNECT, () =>
-            {
-                Console.WriteLine("Disconnected");
-                socket.Close();
 
             });
 
-            socket.On(Socket.EVENT_CONNECT_TIMEOUT, () =>
-            {
-                Console.WriteLine("Can't connect to the server");
-            });
 
-
+            
             socket.On("getBoats", (data) =>
             {
                 Console.WriteLine("Message received");
@@ -70,6 +75,20 @@ namespace Websocket
             {
                 Console.WriteLine("Message received");
                 Console.WriteLine(data);
+            });
+
+
+
+            socket.On(Socket.EVENT_DISCONNECT, () =>
+            {
+                Console.WriteLine("Disconnected");
+                socket.Close();
+
+            });
+
+            socket.On(Socket.EVENT_CONNECT_TIMEOUT, () =>
+            {
+                Console.WriteLine("Can't connect to the server");
             });
 
         }
@@ -91,7 +110,7 @@ namespace Websocket
          */
         public void ControlBoat(double leftEngine, double rightEngine, double rudder)
         {
-            if(leftEngine<0 || leftEngine>1 || rightEngine < 0 || rightEngine > 1 || rudder < 0 || rudder > 1)
+            if (leftEngine < 0 || leftEngine > 1 || rightEngine < 0 || rightEngine > 1 || rudder < 0 || rudder > 1)
             {
                 throw new ArgumentOutOfRangeException("ControlBoat must be called with all parameters between 0 and 1.");
             }
@@ -99,15 +118,18 @@ namespace Websocket
             Dictionary<string, double> values = new Dictionary<string, double>
             {
                 { "leftEngine", leftEngine },
-                { "rightEngine", rightEngine }, 
+                { "rightEngine", rightEngine },
                 { "rudder", rudder }
             };
 
             string json = JsonConvert.SerializeObject(values, Formatting.Indented);
             Console.WriteLine(json);
-            //socket.Emit("controlBoat", json);
+            //socket.Emit("", json);
+
+            //Boat, ID
+            //Motion, json
 
         }
-        
+
     }
 }
