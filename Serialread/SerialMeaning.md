@@ -1,0 +1,106 @@
+﻿$PIHC,5650,D0,0,0,0,-1,A,,95,1111111,9,118,0*2D
+1     2    3  4 5 6 7  8 9 10 11     12 13 14 15
+
+
+
+1:
+Gok vanuit NMEA standaard: $geeft begin van het bericht aan en wordt vervolgt door een talkerID en type bericht. Dit bevat in de NMEA standaard echter 5 tekens. https://en.wikipedia.org/wiki/NMEA_0183
+
+2:?
+
+
+3:?
+
+
+4:
+Set Angle: waarde tussen 0 en 9999. Wordt alleen aangepast bij indrukken en draaien tegelijk.
+
+
+5:?
+
+
+
+6:
+Set Speed: waarde tussen 0 en 9999. Wordt alleen aangepast bij indrukken en draaien tegelijk.
+
+
+7:
+Knoppen:
+	-2	Dim
+	-1	geen knop
+	0	Ready
+	1	Alarm
+	2	Ecdis
+	3	Desk control
+	4	Remote control
+	
+	5	Surge Joystick
+	6	Surge Auto
+	7	Position
+	8	Sway Joystick
+	9	Sway Auto
+	
+	10	Heading Joystick
+	11	Heading Optimal
+	12	Heading Auto
+	13	Heading Lever
+	14	Heading Drift Angle
+	
+	15	Transit
+	16	Track Off
+	17	Track Auto
+	18	Speed Lever
+	19	Speed Auto
+	
+	20	Alarm Page
+	21	Position Page
+	22	DP Page
+
+	23	DP Auto
+	24	DT Slow
+	
+	25	Overview
+	26	Route Page
+	27	Track Page
+	
+	28	Medium Pilot
+	29	DT Medium
+	
+	30	Next Tab
+	31	Track History
+	32	Heading Page
+	
+	33	Sail Pilot
+	34	DT Sail
+
+8:?
+
+
+9:?
+
+
+10:?
+
+
+11:
+Geeft waarde van de switches aan in de joystick. Als deze op een bepaalde as gecentreerd staat, geeft deze een 1, anders 0.
+	1e	X-as joystick (links en rechts)
+	2e	Y-as joystick (boven en beneden)
+	3e	Z-as joystick (bovenkant draaien)
+	4e	?
+	5e	?
+	6e	?
+	7e	?
+	
+12:
+X-as Joystick
+
+13:
+Y-as Joystick
+
+14
+Z-as Joystick
+
+15
+Volgens de NMEA standaard volgt na de * een Checksum. Dit is hier ook het geval. Er wordt gebruik gemaakt van een CheckSum8 Xor. In het voorbeeld wordt dit genomen over PIHC,5650,D0,0,0,0,-1,A,,95,1111111,9,118,0 en hier komt inderdaad 2D uit.	
+	

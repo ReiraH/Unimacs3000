@@ -14,8 +14,22 @@ namespace Websocket
 {
     public class WebsocketClientAuth : IWebsocket
     {
-       private Socket socket;
+        private Socket socket;
+        private String boatSelected = "De henk boot";
 
+        public class MotionMessage
+        {
+           public String boat;
+           public Motion motion;
+
+            public class Motion
+            {
+                public double leftEngine;
+                public double rightEngine;
+                public double rudder;
+            }
+
+        }
 
         public WebsocketClientAuth(String adress)
         {
@@ -31,7 +45,7 @@ namespace Websocket
                     { "password", "unimax" }
                 };
 
-                var resp =  httpClient.PostAsync("https://waterknakkers.niekeichner.nl/login", new FormUrlEncodedContent(parameters)).Result;
+                var resp =  httpClient.PostAsync(adress+"/login", new FormUrlEncodedContent(parameters)).Result;
                 var contents = resp.Content.ReadAsStringAsync().Result;
 
                 return contents;
@@ -39,6 +53,10 @@ namespace Websocket
 
 
             var token = getToken();
+            if(token.Contains("Invalid username or password"))
+            {
+                throw new Exception("Wrong username or password!");
+            }
             socket = IO.Socket(adress);
 
 
@@ -110,24 +128,28 @@ namespace Websocket
          */
         public void ControlBoat(double leftEngine, double rightEngine, double rudder)
         {
+
             if (leftEngine < 0 || leftEngine > 1 || rightEngine < 0 || rightEngine > 1 || rudder < 0 || rudder > 1)
             {
                 throw new ArgumentOutOfRangeException("ControlBoat must be called with all parameters between 0 and 1.");
             }
-
-            Dictionary<string, double> values = new Dictionary<string, double>
+            MotionMessage message = new MotionMessage()
             {
-                { "leftEngine", leftEngine },
-                { "rightEngine", rightEngine },
-                { "rudder", rudder }
+                boat = boatSelected,
+                motion = new MotionMessage.Motion()
+                {
+                    leftEngine = leftEngine,
+                    rightEngine = rightEngine,
+                    rudder = rudder
+                }
             };
 
-            string json = JsonConvert.SerializeObject(values, Formatting.Indented);
+            
+            string json = JsonConvert.SerializeObject(message, Formatting.Indented);
             Console.WriteLine(json);
-            //socket.Emit("", json);
+            //socket.Emit("controller", json);
 
-            //Boat, ID
-            //Motion, json
+
 
         }
 

@@ -14,7 +14,7 @@ namespace Websocket
             Console.WriteLine("Starting websocket...");
             var websocket = new WebsocketClientAuth("https://waterknakkers.niekeichner.nl");
 
-            //websocket.ControlBoat(0.3, 0.4, 0.6);
+            websocket.ControlBoat(0.3, 0.4, 0.6);
 
             Console.ReadKey();
             websocket.Close();
