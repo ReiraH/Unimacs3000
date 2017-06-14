@@ -26,6 +26,7 @@ Set Speed: waarde tussen 0 en 9999. Wordt alleen aangepast bij indrukken en draa
 
 7:
 Knoppen:
+
 	-2	Dim
 	-1	geen knop
 	0	Ready
