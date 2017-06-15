@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace MainApp
 {
-    class Program
+    class MainApp
     {
         static void Main(string[] args)
         {
             Websocket.Websocket websocket = new Websocket.Websocket("https://waterknakkers.niekeichner.nl");
-            Serialread.Program.
+            serialread.InputController input = new serialread.InputController(websocket);
+            Console.ReadKey();
         }
     }
 }

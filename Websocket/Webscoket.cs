@@ -209,6 +209,7 @@ namespace Websocket
             if(boatSelected == null)
             {
                 //throw new InvalidOperationException("There isn't a selected boat.");
+                Console.WriteLine("No boat connected yet!");
                 return;
             }
             MotionMessage message = new MotionMessage()
@@ -225,7 +226,7 @@ namespace Websocket
             
             string json = JsonConvert.SerializeObject(message, Formatting.Indented);
             Console.WriteLine(json);
-            socket.Emit("controller", json);
+            //socket.Emit("controller", json);
 
 
 

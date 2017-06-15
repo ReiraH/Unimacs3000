@@ -18,12 +18,15 @@ namespace serialread
         double joystickControlX;
         double joystickControlY;
         double joystickControlZ;
+        Websocket.Websocket websocket;
 
-        public void Serialread()
+        public InputController(Websocket.Websocket websocket)
         {
             StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
             Task readThread = new Task(Read);
             readThread.Start();
+            this.websocket = websocket;
+
         }
 
         public void Read()
@@ -50,8 +53,11 @@ namespace serialread
                     joystickControlZAndSum = serialsplit[13];
                     IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
                     joystickControlZ = Convert.ToDouble(joystickZsplitter[0]);
-                    Boatcontrol boatcontrol;
-                    boatcontrol = new Boatcontrol((joystickControlX + 800) / 1680, (joystickControlY + 880) / 1930);
+                    //Boatcontrol boatcontrol;
+                    joystickControlX = map(joystickControlX, -800, 1680, -1, 1);
+                    joystickControlY = map(joystickControlY, 880, 1930, -1, 1);
+                    websocket.ControlBoat(joystickControlX, joystickControlX, joystickControlY);
+                    //boatcontrol = new Boatcontrol((joystickControlX + 800) / 1680, (joystickControlY + 880) / 1930);
 
 
 
@@ -59,6 +65,10 @@ namespace serialread
 
                 catch (TimeoutException) { }
             }
+        }
+        double map(double s, double a1, double a2, double b1, double b2)
+        {
+            return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
         }
 
         public void Dictionaries()
