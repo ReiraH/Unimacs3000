@@ -16,11 +16,12 @@ namespace Websocket
     {
         private Socket socket;
         private string boatSelected;
+        private List<Boat> boats = new List<Boat>();
 
         public class MotionMessage
         {
            public string boat;
-           public Motion motion;
+           public Motion motion; 
 
             public class Motion
             {
@@ -40,6 +41,21 @@ namespace Websocket
             {
                 public string token;
             }
+        }
+
+        public class BoatsMessage
+        {
+            public List<Boat> boats;
+        }
+
+        public class BoatMessage
+        {
+            public Boat boat;
+        }
+        public class Boat
+        {
+            public string id;
+            public string name;
         }
 
         public Websocket(string adress)
@@ -92,21 +108,57 @@ namespace Websocket
             
             socket.On("getBoats", (data) =>
             {
-                Console.WriteLine("Message received");
+                Console.WriteLine("Receiving boat List:");
                 Console.WriteLine(data);
+                BoatsMessage message = JsonConvert.DeserializeObject<BoatsMessage>(data.ToString());
+                if (message.boats.Count > 0)
+                {
+                    boats = message.boats;
+                    boatSelected = boats[0].id;
+                    Console.WriteLine("Boat selected: "+boatSelected);
 
+                }
             });
 
             socket.On("boatConnected", (data) =>
             {
-                Console.WriteLine("Message received");
+                Console.WriteLine("Boat connected:");
                 Console.WriteLine(data);
+                BoatMessage message = JsonConvert.DeserializeObject<BoatMessage>(data.ToString());
+                boats.Add(message.boat);
+                if(boats.Count == 1)
+                {
+                    boatSelected = boats[0].id;
+                    Console.WriteLine("Boat selected: " + boatSelected);
+
+                }
+
             });
 
             socket.On("boatDisconnected", (data) =>
             {
-                Console.WriteLine("Message received");
+                Console.WriteLine("Boat disconnected:");
                 Console.WriteLine(data);
+                BoatMessage message = JsonConvert.DeserializeObject<BoatMessage>(data.ToString());
+                boats.Remove(message.boat);
+
+                if(boatSelected == message.boat.id)
+                {
+                    Console.WriteLine("Disconnected Boat was the selected boat");
+                    if(boats.Count > 0)
+                    {
+
+                        boatSelected = boats[0].id;
+                        Console.WriteLine("Boat selected: "+boatSelected);
+                    }
+                    else
+                    {
+                        boatSelected = null;
+                        Console.WriteLine("No boat selected.");
+                    }
+                    
+                }
+
             });
 
 
@@ -131,22 +183,33 @@ namespace Websocket
             socket.Close();
         }
 
-
+        public void SelectBoat(string id)
+        {
+            if(boats.Exists(obj => obj.id == id))
+            {
+                boatSelected = id;
+            }
+            else
+            {
+                Console.WriteLine("That boat isn't connected!");
+            }
+        }
 
         /*
-         *  Send an instruction for remote control to the boat. Values should be between 0 and 1.
+         *  Send an instruction for remote control to the boat. Values should be between -1 and 1.
          */
         public void ControlBoat(double leftEngine, double rightEngine, double rudder)
         {
 
-            if (leftEngine < 0 || leftEngine > 1 || rightEngine < 0 || rightEngine > 1 || rudder < 0 || rudder > 1)
+            if (leftEngine < -1 || leftEngine > 1 || rightEngine < -1 || rightEngine > 1 || rudder < -1 || rudder > 1)
             {
                 throw new ArgumentOutOfRangeException("ControlBoat must be called with all parameters between 0 and 1.");
             }
 
             if(boatSelected == null)
             {
-                throw new InvalidOperationException("There isn't a selected boat.");
+                //throw new InvalidOperationException("There isn't a selected boat.");
+                return;
             }
             MotionMessage message = new MotionMessage()
             {

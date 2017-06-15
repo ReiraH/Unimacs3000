@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Websocket
 {
@@ -13,9 +14,20 @@ namespace Websocket
 
             Console.WriteLine("Starting websocket...");
             var websocket = new Websocket("https://waterknakkers.niekeichner.nl");
+            Thread.Sleep(4000);
+            while ((true))
+            {
+                websocket.ControlBoat(0, 0, 1);
+                Thread.Sleep(1000);
+                websocket.ControlBoat(0, 0, -1);
+                Thread.Sleep(1000);
 
-            //websocket.ControlBoat(0.3, 0.4, 0.6);
 
+
+
+            }
+
+            //websocket.SelectBoat("Henk");
             Console.ReadKey();
             websocket.Close();
 
