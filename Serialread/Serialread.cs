@@ -1,4 +1,5 @@
-﻿using System;
+﻿using serialread;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading;
 public class Serialread
 {
     Boatcontrol boat;
+    IInputController inputcontroller;
     
     public Serialread()
     {
@@ -31,7 +33,8 @@ public class Serialread
             try
             {
                 serialdata = serial.ReadLine();
-                IList<string> serialsplit = serialdata.Split(',').Reverse().ToList<string>();
+                InputController(serialdata);
+               /* IList<string> serialsplit = serialdata.Split(',').Reverse().ToList<string>();
 
                 
                 joyStickControlY = serialsplit[2];
@@ -39,7 +42,9 @@ public class Serialread
 
 
                 joyStickControl(joyStickControlX,joyStickControlY);
-            }
+    */       
+    }
+
             catch (TimeoutException) { }
         }
     }

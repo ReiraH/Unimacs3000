@@ -10,6 +10,8 @@ public class Boatcontrol
         double motor2 = motor1;
         String final;
 
+        
+/*
         if (steer < 0.2)// naar links sturen
         {
             if (motor2 == 1.0) { motor1 -= 0.6; }// scherpe bocht vooruit 
@@ -20,7 +22,7 @@ public class Boatcontrol
             if (motor1 == 1.0) { motor2 -= 0.6; }// scherpe bocht vooruit
             else if (motor1 == 0) { motor2 += 0.6; }//scherpe bocht achteruit
         }
-        final = Convert.ToString("leftEngine " + motor1 + ", rightEngine: " + motor2 + ", rudder: " + steer);
+*/        final = Convert.ToString("leftEngine " + motor1 + ", rightEngine: " + motor2 + ", rudder: " + steer);
 
 
     }
