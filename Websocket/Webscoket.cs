@@ -214,8 +214,8 @@ namespace Websocket
             if(boatSelected == null)
             {
                 //throw new InvalidOperationException("There isn't a selected boat.");
-                Console.WriteLine("No boat connected yet!");
-                //Console.WriteLine(leftEngine + " - "+ rightEngine + " - " + rudder);
+                //Console.WriteLine("No boat connected yet!");
+                Console.WriteLine(leftEngine + " - "+ rightEngine + " - " + rudder);
                 return;
             }
             MotionMessage message = new MotionMessage()

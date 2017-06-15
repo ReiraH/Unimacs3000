@@ -14,9 +14,9 @@ namespace serialread
         {
             {"setAngle", 0.0},
             {"setSpeed", 0.0},
-            {"Buttons", -1},
-            {"JoystickY", 0.0},
-            {"JoystickX", 0.0},
+            {"buttons", -1},
+            {"joystickY", 0.0},
+            {"joystickX", 0.0},
             {"joystickZ", 0.0}
 
         };
@@ -36,7 +36,8 @@ namespace serialread
 
         public void Read()
         {
-            SerialPort serial = new SerialPort("COM5", 9600);
+            SerialPort serial = new SerialPort("COM4", 9600);
+            Thread.Sleep(50);
             Boolean _continue = true;
             String message;
             String joystickControlZAndSum;
@@ -53,24 +54,26 @@ namespace serialread
                     dictionary["setSpeed"] = Convert.ToInt32(serialsplit[5]);
                     dictionary["buttons"] = Convert.ToInt32(serialsplit[6]);
                     dictionary["joystickSwitch"] = Convert.ToInt32(serialsplit[10]);
-                    double joystickY = Convert.ToDouble(serialsplit[11]);
-                    double joystickX = Convert.ToDouble(serialsplit[12]);
+                    double joystickX = Convert.ToDouble(serialsplit[11]);
+                    double joystickY = Convert.ToDouble(serialsplit[12]);
                     joystickControlZAndSum = serialsplit[13];
                     IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
                     double joystickZ = Convert.ToDouble(joystickZsplitter[0]);
 
-                    if (joystickZ == 1)
+                    if (true)
                     {
-                        dictionary["joystickX"] = Map(joystickX, -800, 1680, -1, 1);
-                        dictionary["joystickY"] = Map(joystickY, 880, 1930, -1, 1);
-                        dictionary["joystickZ"] = map(joystickZ,)
-                        dictionary["joystickControlZ"] = Convert.ToDouble(joystickZsplitter[0]);
+                        dictionary["joystickX"] = Map(joystickX, -950, 1100, -1, 1);
+                        dictionary["joystickY"] = Map(joystickY, -900, 900, -1, 1);
+                        dictionary["joystickZ"] = Map(Convert.ToDouble(joystickZ), -850, 950, -1, 1);
                     }
+                    //Console.WriteLine("setAngle: "+ dictionary["setAngle"]);
+                    Console.WriteLine("buttons: " + dictionary["buttons"]);
+
                     //websocket.ControlBoat(dictionary["joystickX"], dictionary[" joystickX"], dictionary[" joystickY"]);
 
                 }
 
-                catch (TimeoutException) { }
+                catch (Exception) { }
             }
         }
         double Map(double value, double a1, double a2, double b1, double b2)
@@ -79,36 +82,42 @@ namespace serialread
         }
 
         public void InputHandler() {
-            //control boat
-            double motorPower = dictionary[Properties.Settings.Default.MotorPower];
-            double motorSteer = dictionary[Properties.Settings.Default.MotorSteer];
-            double rudder = dictionary[Properties.Settings.Default.Rudder];
-            double leftEngine;
-            double rightEngine;
-
-            if (motorSteer > 0)
+            while (true)
             {
-                leftEngine = motorPower;
-                rightEngine = -1 * Map(motorSteer, 0, 1, -1 * motorPower, 1 * motorPower);
+                /*
+                //control boat
+                double motorPower = dictionary[Properties.Settings.Default.MotorPower];
+                double motorSteer = dictionary[Properties.Settings.Default.MotorSteer];
+                double rudder = dictionary[Properties.Settings.Default.Rudder];
+                Console.WriteLine("Inputhandler: "+ motorPower +  " - " + motorSteer);
+                double leftEngine;
+                double rightEngine;
+
+                if (motorSteer > 0)
+                {
+                    leftEngine = motorPower;
+                    rightEngine = -1 * Map(motorSteer, 0, 1, -1 * motorPower, 1 * motorPower);
+                }
+
+                else if (motorSteer < 0)
+                {
+                    rightEngine = motorPower;
+                    leftEngine = Map(motorSteer, -1, 0, -1 * motorPower, 1 * motorPower);
+                }
+                else
+                {
+                    leftEngine = rightEngine = motorPower;
+                }
+                websocket.ControlBoat(leftEngine, rightEngine, rudder);
+                */
+
+
+
+
+
+
+                Thread.Sleep(2);
             }
-
-            else if (motorSteer < 0) { 
-                rightEngine = motorPower;
-                leftEngine = Map(motorSteer, -1, 0, -1 * motorPower, 1 * motorPower);
-            }
-            else
-            {
-                leftEngine = rightEngine = motorPower;
-            }
-            websocket.ControlBoat(leftEngine, rightEngine, rudder);
-
-
-
-            //other functions to be added later here
-
-
-
-            Thread.Sleep(2);
         }
     }
 }

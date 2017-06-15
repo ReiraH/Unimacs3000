@@ -25,7 +25,7 @@ namespace serialread.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("JoystickZ")]
+        [global::System.Configuration.DefaultSettingValueAttribute("joystickZ")]
         public string Rudder {
             get {
                 return ((string)(this["Rudder"]));
@@ -37,7 +37,7 @@ namespace serialread.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("JoystickY")]
+        [global::System.Configuration.DefaultSettingValueAttribute("joystickY")]
         public string MotorPower {
             get {
                 return ((string)(this["MotorPower"]));
@@ -49,7 +49,7 @@ namespace serialread.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("JoystickX")]
+        [global::System.Configuration.DefaultSettingValueAttribute("joystickX")]
         public string MotorSteer {
             get {
                 return ((string)(this["MotorSteer"]));

@@ -50,7 +50,7 @@ namespace ModBusReader
                     {
                         leftHandle = 0;
                    }
-                    if (wheel < 0.12 && wheel > -0.12)
+                    if (wheel < 0.175 && wheel > -0.175)
                     {
                         wheel = 0;
                    }
