@@ -12,14 +12,14 @@ using System.Net.Http;
 
 namespace Websocket
 {
-    public class WebsocketClientAuth : IWebsocket
+    public class Websocket
     {
         private Socket socket;
-        private String boatSelected = "De henk boot";
+        private string boatSelected;
 
         public class MotionMessage
         {
-           public String boat;
+           public string boat;
            public Motion motion;
 
             public class Motion
@@ -31,7 +31,18 @@ namespace Websocket
 
         }
 
-        public WebsocketClientAuth(String adress)
+        public class LoginToken
+        {
+            public string error;
+            public Payload payload;
+
+            public class Payload
+            {
+                public string token;
+            }
+        }
+
+        public Websocket(string adress)
         {
 
 
@@ -52,18 +63,19 @@ namespace Websocket
             }
 
 
-            var token = getToken();
-            if(token.Contains("Invalid username or password"))
+            LoginToken token = JsonConvert.DeserializeObject<LoginToken>(getToken());
+
+            if (token.error != "0") 
             {
-                throw new Exception("Wrong username or password!");
+                throw new Exception("Login Error: " + token.error);
             }
             socket = IO.Socket(adress);
 
 
             socket.On(Socket.EVENT_CONNECT, () =>
             {
-                Console.WriteLine("Connected, sending token for authentication: "+token);
-                socket.Emit("authentication", token);
+                Console.WriteLine("Connected, sending token for authentication");
+                socket.Emit("authentication", JsonConvert.SerializeObject(token.payload));
              });
 
 
@@ -71,6 +83,7 @@ namespace Websocket
             {
                 Console.WriteLine("Ma Boi i'm in");
                 socket.Emit("getBoats");
+
 
 
             });
@@ -81,6 +94,7 @@ namespace Websocket
             {
                 Console.WriteLine("Message received");
                 Console.WriteLine(data);
+
             });
 
             socket.On("boatConnected", (data) =>
@@ -117,10 +131,6 @@ namespace Websocket
             socket.Close();
         }
 
-        public void Send(string message)
-        {
-            throw new NotImplementedException();
-        }
 
 
         /*
@@ -132,6 +142,11 @@ namespace Websocket
             if (leftEngine < 0 || leftEngine > 1 || rightEngine < 0 || rightEngine > 1 || rudder < 0 || rudder > 1)
             {
                 throw new ArgumentOutOfRangeException("ControlBoat must be called with all parameters between 0 and 1.");
+            }
+
+            if(boatSelected == null)
+            {
+                throw new InvalidOperationException("There isn't a selected boat.");
             }
             MotionMessage message = new MotionMessage()
             {
@@ -147,7 +162,7 @@ namespace Websocket
             
             string json = JsonConvert.SerializeObject(message, Formatting.Indented);
             Console.WriteLine(json);
-            //socket.Emit("controller", json);
+            socket.Emit("controller", json);
 
 
 
