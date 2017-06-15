@@ -22,7 +22,7 @@ namespace serialread
 
         public InputController(Websocket.Websocket websocket)
         {
-            StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
+            //StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
             Task readThread = new Task(Read);
             readThread.Start();
             this.websocket = websocket;
@@ -42,21 +42,21 @@ namespace serialread
                 try
                 {   
                     message = serial.ReadLine();
-                    IList<string> serialsplit = message.Split(',').ToList<string>();
+                    IList<string> serialsplit = message.Split(',').Reverse().ToList<string>();
                     // testen of de goede gesplit is
-                    setAngle = Convert.ToInt32(serialsplit[3]);
-                    setSpeed = Convert.ToInt32(serialsplit[5]);
-                    buttons = Convert.ToInt32(serialsplit[6]);
-                    joystickSwitch = Convert.ToInt32(serialsplit[10]);
-                    joystickControlY = Convert.ToDouble(serialsplit[11]);
-                    joystickControlX = Convert.ToDouble(serialsplit[12]);
-                    joystickControlZAndSum = serialsplit[13];
-                    IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
-                    joystickControlZ = Convert.ToDouble(joystickZsplitter[0]);
+                  //  setAngle = Convert.ToInt32(serialsplit[3]);
+                   // setSpeed = Convert.ToInt32(serialsplit[5]);
+                    //buttons = Convert.ToInt32(serialsplit[6]);
+                    //joystickSwitch = Convert.ToInt32(serialsplit[10]);
+                    joystickControlY = Convert.ToDouble(serialsplit[1]);
+                    joystickControlX = Convert.ToDouble(serialsplit[2]);
+                  //  joystickControlZAndSum = serialsplit[13];
+                   // IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
+                   // joystickControlZ = Convert.ToDouble(joystickZsplitter[0]);
                     //Boatcontrol boatcontrol;
-                    joystickControlX = map(joystickControlX, -800, 1680, -1, 1);
-                    joystickControlY = map(joystickControlY, 880, 1930, -1, 1);
-                    websocket.ControlBoat(joystickControlX, joystickControlX, joystickControlY);
+                    joystickControlX = map(joystickControlX, -950, 1100, -1, 1);
+                    joystickControlY = map(joystickControlY, -850, 900, -1, 1);
+                    websocket.ControlBoat(joystickControlY, joystickControlY, joystickControlX);
                     //boatcontrol = new Boatcontrol((joystickControlX + 800) / 1680, (joystickControlY + 880) / 1930);
 
 
