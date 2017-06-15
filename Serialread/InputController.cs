@@ -10,18 +10,22 @@ namespace serialread
 {
     public class InputController
     {
+        Dictionary<string, dynamic> dictionary = new Dictionary<string, dynamic>
+        {
+            {"setAngle", 0.0},
+            {"setSpeed", 0.0},
+            {"Buttons", -1},
+            {"JoystickY", 0.0},
+            {"JoystickX", 0.0},
+            {"joystickZ", 0.0}
+            
+        };
 
-        int setAngle;
-        int setSpeed;
-        int buttons;
-        int joystickSwitch;
-        double joystickControlX;
-        double joystickControlY;
-        double joystickControlZ;
         Websocket.Websocket websocket;
 
         public InputController(Websocket.Websocket websocket)
         {
+
             StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
             Task readThread = new Task(Read);
             readThread.Start();
@@ -31,7 +35,7 @@ namespace serialread
 
         public void Read()
         {
-            SerialPort serial = new SerialPort("COM4", 9600);
+            SerialPort serial = new SerialPort("COM5", 9600);
             Boolean _continue = true;
             String message;
             String joystickControlZAndSum;
@@ -43,24 +47,26 @@ namespace serialread
                 {   
                     message = serial.ReadLine();
                     IList<string> serialsplit = message.Split(',').ToList<string>();
-                    // testen of de goede gesplit is
-                    setAngle = Convert.ToInt32(serialsplit[3]);
-                    setSpeed = Convert.ToInt32(serialsplit[5]);
-                    buttons = Convert.ToInt32(serialsplit[6]);
-                    joystickSwitch = Convert.ToInt32(serialsplit[10]);
-                    joystickControlY = Convert.ToDouble(serialsplit[11]);
-                    joystickControlX = Convert.ToDouble(serialsplit[12]);
+                    
+                    dictionary["setAngle"] = Convert.ToInt32(serialsplit[3]);
+                    dictionary["setSpeed"] = Convert.ToInt32(serialsplit[5]);
+                    dictionary["buttons"] = Convert.ToInt32(serialsplit[6]);
+                    dictionary["joystickSwitch"] = Convert.ToInt32(serialsplit[10]);
+                    double joystickY = Convert.ToDouble(serialsplit[11]);
+                    double joystickX = Convert.ToDouble(serialsplit[12]);
                     joystickControlZAndSum = serialsplit[13];
                     IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
-                    joystickControlZ = Convert.ToDouble(joystickZsplitter[0]);
-                    //Boatcontrol boatcontrol;
-                    joystickControlX = map(joystickControlX, -800, 1680, -1, 1);
-                    joystickControlY = map(joystickControlY, 880, 1930, -1, 1);
-                    websocket.ControlBoat(joystickControlX, joystickControlX, joystickControlY);
-                    //boatcontrol = new Boatcontrol((joystickControlX + 800) / 1680, (joystickControlY + 880) / 1930);
+                    double joystickZ = Convert.ToDouble(joystickZsplitter[0]);
 
-
-
+                    if (joystickZ == 1)
+                    {
+                        dictionary["joystickX"] = map(joystickX, -800, 1680, -1, 1);
+                        dictionary["joystickY"] = map(joystickY, 880, 1930, -1, 1);
+                        dictionary["joystickZ"] = map(joystickZ,)
+                        dictionary["joystickControlZ"] = Convert.ToDouble(joystickZsplitter[0]);
+                    }
+                    //websocket.ControlBoat(dictionary["joystickX"], dictionary[" joystickX"], dictionary[" joystickY"]);
+                    
                 }
 
                 catch (TimeoutException) { }
@@ -70,21 +76,7 @@ namespace serialread
         {
             return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
         }
-
-        public void Dictionaries()
-        {
-            Dictionary<string, dynamic> dictionary = new Dictionary<string, dynamic>();
-
-            dictionary.Add("setAngle",setAngle);
-            dictionary.Add("setSpeed",setSpeed);
-            dictionary.Add("Buttons", buttons);
-            dictionary.Add("JoystickSwitch", joystickSwitch);
-            dictionary.Add("JoystickControlY",joystickControlY );
-            dictionary.Add("JoystickControlX", joystickControlX );
-            dictionary.Add("joystickControlZ", joystickControlZ );
-            
-        }
-        
+       
 
 
         /*
