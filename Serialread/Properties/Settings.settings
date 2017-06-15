@@ -5,5 +5,11 @@
     <Setting Name="Rudder" Type="System.String" Scope="User">
       <Value Profile="(Default)">JoystickZ</Value>
     </Setting>
+    <Setting Name="MotorPower" Type="System.String" Scope="User">
+      <Value Profile="(Default)">JoystickY</Value>
+    </Setting>
+    <Setting Name="MotorSteer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">JoystickX</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

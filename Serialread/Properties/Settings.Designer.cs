@@ -34,5 +34,29 @@ namespace serialread.Properties {
                 this["Rudder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("JoystickY")]
+        public string MotorPower {
+            get {
+                return ((string)(this["MotorPower"]));
+            }
+            set {
+                this["MotorPower"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("JoystickX")]
+        public string MotorSteer {
+            get {
+                return ((string)(this["MotorSteer"]));
+            }
+            set {
+                this["MotorSteer"] = value;
+            }
+        }
     }
 }

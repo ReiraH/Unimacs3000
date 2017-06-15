@@ -85,7 +85,21 @@ namespace serialread
             
         }
         
+        public void InputHandler()
+        {
+            while (true)
+            {
+                //control boat
+                double leftMotor = dictiona
+                Properties.Settings.Default.
 
+                //other functions to be added later here
+
+
+
+                Thread.Sleep(2);
+            }
+        }
 
         /*
         public void Knoppen()
