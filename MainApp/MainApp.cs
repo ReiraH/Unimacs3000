@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModBusReader;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,8 @@ namespace MainApp
         static void Main(string[] args)
         {
             Websocket.Websocket websocket = new Websocket.Websocket("https://waterknakkers.niekeichner.nl");
-            serialread.InputController input = new serialread.InputController(websocket);
+            //serialread.InputController input = new serialread.InputController(websocket);
+            ModBusReader.ModBusReader reader = new ModBusReader.ModBusReader(websocket);
             Console.ReadKey();
         }
     }
