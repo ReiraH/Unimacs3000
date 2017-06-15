@@ -50,8 +50,12 @@ namespace serialread
                     joystickControlZAndSum = serialsplit[13];
                     IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
                     joystickControlZ = Convert.ToDouble(joystickZsplitter[0]);
+                    Boatcontrol boatcontrol;
+                    boatcontrol = new Boatcontrol((joystickControlX + 800) / 1680, (joystickControlY + 880) / 1930);
 
-               }
+
+
+                }
 
                 catch (TimeoutException) { }
             }
@@ -68,9 +72,7 @@ namespace serialread
             dictionary.Add("JoystickControlY",joystickControlY );
             dictionary.Add("JoystickControlX", joystickControlX );
             dictionary.Add("joystickControlZ", joystickControlZ );
-            Boatcontrol boatcontrol;
-            boatcontrol = new Boatcontrol((joystickControlX + 800) / 1680, (joystickControlY + 880) / 1930);
-
+            
         }
         
 
