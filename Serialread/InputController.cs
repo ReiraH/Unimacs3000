@@ -6,15 +6,10 @@ using System.Threading.Tasks;
 
 namespace serialread
 {
-    public class InputController
+    public class InputController : IInputController
     {
-        public InputController()
-        {
-            //make serial connections
-            //get link to websocket
+       
+        
 
-            //TODO
-            //
-        }   
     }
 }

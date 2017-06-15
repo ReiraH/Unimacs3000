@@ -11,7 +11,6 @@ public class Serialread
 
     public Serialread()
     {
-        //blaa
         StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
         Thread readThread = new Thread(Read);
         readThread.Start();
