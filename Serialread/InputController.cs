@@ -12,7 +12,7 @@ namespace serialread
 {
     public class InputController
     {
-        Dictionary<string, dynamic> serialInput = new Dictionary<string, dynamic>
+        private Dictionary<string, dynamic> serialInput = new Dictionary<string, dynamic>
         {
             {"setAngle", 0.0},
             {"setSpeed", 0.0},
@@ -23,7 +23,7 @@ namespace serialread
 
         };
 
-        Dictionary<string, dynamic> modbusInput = new Dictionary<string, dynamic>
+        private Dictionary<string, dynamic> modbusInput = new Dictionary<string, dynamic>
         {
             {"wheel", 0.0 },
             {"leftHandle", 0.0 },
@@ -39,7 +39,8 @@ namespace serialread
             Task serialReader = new Task(SerialReader);
             serialReader.Start();
 
-            Task modbusReader = new Task()
+            Task modbusReader = new Task(ModbusReader);
+            modbusReader.Start();
 
 
             Task inputHandler = new Task(InputHandler);
@@ -98,6 +99,48 @@ namespace serialread
 
             while (_continue)
             {
+                //get raw values
+                ushort rawWheelValue = master.ReadInputRegisters(7, 1)[0];
+                ushort rawLeftHandleValue = master.ReadInputRegisters(4, 1)[0];
+                ushort rawRightHandleValue = master.ReadInputRegisters(5, 1)[0];
+
+                //convert to double between -1 and 1
+                Double wheel = Map(rawWheelValue, 5720, 17500, -1, 1);
+                Double leftHandle = Map(rawLeftHandleValue, 5728, 18824, -1, 1);
+                Double rightHandle = Map(rawRightHandleValue, 5728, 18888, -1, 1);
+
+                //deadzones
+                if (rightHandle < 0.02 && rightHandle > -0.02)
+                {
+                    rightHandle = 0;
+                }
+                if (leftHandle < 0.02 && leftHandle > -0.02)
+                {
+                    leftHandle = 0;
+                }
+                if (wheel < 0.175 && wheel > -0.175)
+                {
+                    wheel = 0;
+                }
+
+                //create new dictionary
+                Dictionary<string, dynamic> newModbusInput = new Dictionary<string, dynamic>
+                {
+                    {"wheel", wheel },
+                    {"leftHandle", leftHandle },
+                    {"rightHandle", rightHandle }
+                };
+
+                //update 
+                lock (modbusInput)
+                {
+                    modbusInput = newModbusInput;
+                }
+
+                //sleep
+                Thread.Sleep(1);
+
+
 
             }
 
