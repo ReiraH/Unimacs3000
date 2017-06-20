@@ -33,9 +33,9 @@ namespace serialread
         private Websocket.Websocket websocket;
         private SerialInput serialInput = new SerialInput();
         private ModbusInput modbusInput = new ModbusInput();
-        private double oldLeftEngine = 0;
-        private double oldRightEngine = 0;
-        private double oldRudder = 0;
+        private double oldLeftEngine = 2;
+        private double oldRightEngine = 2;
+        private double oldRudder = 2;
 
 
 
@@ -80,6 +80,7 @@ namespace serialread
                 {
 
                     message = serial.ReadLine();
+                    //Console.WriteLine(message);
                     IList<String> serialsplitWithChecksum = message.Split('*').ToList<String>();
 
                     IList<string> serialsplit = serialsplitWithChecksum[0].Split(',').ToList<string>();
@@ -99,16 +100,17 @@ namespace serialread
 
 
                     //deadzone en conversion naar een double tussen -1 en 1
-                    if (switchX == 1) { joystickX = 0; }
+                    if (switchX == '1') { joystickX = 0; }
                     else { joystickX = Map(rawJoystickX, -950, 1100, -1, 1); }
 
-                    if (switchY == 1) { joystickY = 0; }
+                    if (switchY == '1') { joystickY = 0; }
                     else { joystickY = Map(rawJoystickY, -900, 900, -1, 1); }
 
-                    if (switchZ == 1) { joystickZ = 0; }
+                    //cable is loose so I set it to 2 so it will always be false
+                    if (switchZ == '2') { joystickZ = 0; }
                     else { joystickZ = Map(rawJoystickZ, -850, 950, -1, 1); }
 
-                    //create new dictionary
+                    //create new input object
                     SerialInput newSerialInput = new SerialInput()
                     {
                         setAngle = setAngle,
@@ -252,23 +254,23 @@ namespace serialread
 
             void Joystick()
             {
-                if (serial.joystickX > 0)
+                if (serial.joystickZ > 0)
                 {
                     leftEngine = serial.joystickY;
-                    rightEngine = -1 * Map(serial.joystickX, 0, 1, -1 * serial.joystickY, 1 * serial.joystickY);
+                    rightEngine = -1 * Map(serial.joystickZ, 0, 1, -1 * serial.joystickY, 1 * serial.joystickY);
                 }
 
-                else if (serial.joystickX < 0)
+                else if (serial.joystickZ < 0)
                 {
                     rightEngine = serial.joystickY;
-                    leftEngine = Map(serial.joystickX, -1, 0, -1 * serial.joystickY, 1 * serial.joystickY);
+                    leftEngine = Map(serial.joystickZ, -1, 0, -1 * serial.joystickY, 1 * serial.joystickY);
                 }
                 else
                 {
                     leftEngine = rightEngine = serial.joystickY;
                 }
 
-                rudder = serial.joystickZ;
+                rudder = serial.joystickX;
             }
 
             void JoystickWheel()

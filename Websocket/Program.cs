@@ -13,7 +13,7 @@ namespace Websocket
         {
 
             Console.WriteLine("Starting websocket...");
-            var websocket = new Websocket("https://waterknakkers.niekeichner.nl");
+            var websocket = new Websocket("https://waterknakkers.niekeichner.nl", "scheepsbrug", "unimax");
             Thread.Sleep(4000);
             while ((true))
             {

@@ -37,7 +37,7 @@ namespace serialread.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("JoystickWheel")]
+        [global::System.Configuration.DefaultSettingValueAttribute("joystickWheel")]
         public string ControlMode {
             get {
                 return ((string)(this["ControlMode"]));

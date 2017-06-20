@@ -6,7 +6,7 @@
       <Value Profile="(Default)">COM4</Value>
     </Setting>
     <Setting Name="ControlMode" Type="System.String" Scope="User">
-      <Value Profile="(Default)">JoystickWheel</Value>
+      <Value Profile="(Default)">joystickWheel</Value>
     </Setting>
     <Setting Name="SwitchToJoystick" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
