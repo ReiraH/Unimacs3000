@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.UI.WebControls.WebParts;
 
 using System.Net.Http;
+using Unimacs_3000.Models;
 
 namespace Websocket
 {
@@ -17,7 +18,7 @@ namespace Websocket
         private Socket socket;
         private string boatSelected;
         private List<Boat> boats = new List<Boat>();
-
+        private UnimacsContext db = new UnimacsContext();
         public class MotionMessage
         {
            public string boat;
@@ -211,7 +212,7 @@ namespace Websocket
                 rudder = Math.Min(1, rudder);
             }
 
-            if(boatSelected == null)
+            /*if(boatSelected == null)
             {
                 //throw new InvalidOperationException("There isn't a selected boat.");
                 //Console.WriteLine("No boat connected yet!");
@@ -233,9 +234,14 @@ namespace Websocket
             string json = JsonConvert.SerializeObject(message, Formatting.Indented);
             Console.WriteLine(json);
             //socket.Emit("controller", json);
-
-
-
+            */
+            BoatMotion boatMotion = new BoatMotion();
+            boatMotion.LeftEngineValue = leftEngine;
+            boatMotion.RightEngineValue = rightEngine;
+            boatMotion.RudderValue = rudder;
+            boatMotion.Timestamp = DateTime.Now;
+            db.BoatMotions.Add(boatMotion);
+            db.SaveChanges();
         }
 
     }

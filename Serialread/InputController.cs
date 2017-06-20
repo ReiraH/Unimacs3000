@@ -50,7 +50,8 @@ namespace serialread
 
         private void SerialReader()
         {
-            SerialPort serial = new SerialPort("COM4", 9600);
+            
+            SerialPort serial = new SerialPort(Properties.Settings.Default.ComPoort, 9600);
             Thread.Sleep(50);
             Boolean _continue = true;
             String message;
@@ -75,12 +76,15 @@ namespace serialread
                     IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
                     double joystickZ = Convert.ToDouble(joystickZsplitter[0]);
 
-                    if (true)
-                    {
-                        serialInput["joystickX"] = Map(joystickX, -950, 1100, -1, 1);
-                        serialInput["joystickY"] = Map(joystickY, -900, 900, -1, 1);
-                        serialInput["joystickZ"] = Map(Convert.ToDouble(joystickZ), -850, 950, -1, 1);
-                    }
+                    if (dictionary["joystickSwitch"] = 1000000) { dictionary["joystickX"] = 0; }
+                    else{dictionary["joystickX"] = Map(joystickX, -950, 1100, -1, 1);}
+
+                    if (dictionary["joystickSwitch"] = 0100000) { dictionary["joystickY"] = 0; }
+                    else { dictionary["joystickY"] = Map(joystickY, -900, 900, -1, 1); }
+
+                    if (dictionary["joystickSwitch"] = 0010000) { dictionary["joystickZ"] = 0; }
+                    else { dictionary["joystickZ"] = Map(joystickZ, -850, 950, -1, 1); }
+                    
                     //Console.WriteLine("setAngle: "+ dictionary["setAngle"]);
                     Console.WriteLine("buttons: " + serialInput["buttons"]);
 
@@ -155,43 +159,38 @@ namespace serialread
         public void InputHandler() {
             while (true)
             {
-                /*
-                //control boat
-                double motorPower = dictionary[Properties.Settings.Default.MotorPower];
-                double motorSteer = dictionary[Properties.Settings.Default.MotorSteer];
-                double rudder = dictionary[Properties.Settings.Default.Rudder];
-                Console.WriteLine("Inputhandler: "+ motorPower +  " - " + motorSteer);
-                double leftEngine;
-                double rightEngine;
-
-                if (motorSteer > 0)
-                {
-                    leftEngine = motorPower;
-                    rightEngine = -1 * Map(motorSteer, 0, 1, -1 * motorPower, 1 * motorPower);
-                }
-
-                else if (motorSteer < 0)
-                {
-                    rightEngine = motorPower;
-                    leftEngine = Map(motorSteer, -1, 0, -1 * motorPower, 1 * motorPower);
-                }
-                else
-                {
-                    leftEngine = rightEngine = motorPower;
-                }
-                websocket.ControlBoat(leftEngine, rightEngine, rudder);
-                */
-
-
-
-
-
-
+               
                 Thread.Sleep(2);
             }
         }
     }
 }
+/*
+               //control boat
+               double motorPower = dictionary[Properties.Settings.Default.MotorPower];
+               double motorSteer = dictionary[Properties.Settings.Default.MotorSteer];
+               double rudder = dictionary[Properties.Settings.Default.Rudder];
+               Console.WriteLine("Inputhandler: "+ motorPower +  " - " + motorSteer);
+               double leftEngine;
+               double rightEngine;
+
+               if (motorSteer > 0)
+               {
+                   leftEngine = motorPower;
+                   rightEngine = -1 * Map(motorSteer, 0, 1, -1 * motorPower, 1 * motorPower);
+               }
+
+               else if (motorSteer < 0)
+               {
+                   rightEngine = motorPower;
+                   leftEngine = Map(motorSteer, -1, 0, -1 * motorPower, 1 * motorPower);
+               }
+               else
+               {
+                   leftEngine = rightEngine = motorPower;
+               }
+               websocket.ControlBoat(leftEngine, rightEngine, rudder);
+               */
 
 
 

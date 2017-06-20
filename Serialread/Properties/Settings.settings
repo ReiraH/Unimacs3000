@@ -11,5 +11,8 @@
     <Setting Name="MotorSteer" Type="System.String" Scope="User">
       <Value Profile="(Default)">joystickX</Value>
     </Setting>
+    <Setting Name="ComPoort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM4</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
