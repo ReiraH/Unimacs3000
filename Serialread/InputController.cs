@@ -159,38 +159,38 @@ namespace serialread
         public void InputHandler() {
             while (true)
             {
-               
+                ControlBoat();
                 Thread.Sleep(2);
             }
         }
+        private void ControlBoat()
+        {
+            double motorPower = serialInput[Properties.Settings.Default.MotorPower];
+            double motorSteer = serialInput[Properties.Settings.Default.MotorSteer];
+            double rudder = serialInput[Properties.Settings.Default.Rudder];
+            Console.WriteLine("Inputhandler: " + motorPower + " - " + motorSteer);
+            double leftEngine;
+            double rightEngine;
+
+            if (motorSteer > 0)
+            {
+                leftEngine = motorPower;
+                rightEngine = -1 * Map(motorSteer, 0, 1, -1 * motorPower, 1 * motorPower);
+            }
+
+            else if (motorSteer < 0)
+            {
+                rightEngine = motorPower;
+                leftEngine = Map(motorSteer, -1, 0, -1 * motorPower, 1 * motorPower);
+            }
+            else
+            {
+                leftEngine = rightEngine = motorPower;
+            }
+            websocket.ControlBoat(leftEngine, rightEngine, rudder);
+        }
     }
 }
-/*
-               //control boat
-               double motorPower = dictionary[Properties.Settings.Default.MotorPower];
-               double motorSteer = dictionary[Properties.Settings.Default.MotorSteer];
-               double rudder = dictionary[Properties.Settings.Default.Rudder];
-               Console.WriteLine("Inputhandler: "+ motorPower +  " - " + motorSteer);
-               double leftEngine;
-               double rightEngine;
-
-               if (motorSteer > 0)
-               {
-                   leftEngine = motorPower;
-                   rightEngine = -1 * Map(motorSteer, 0, 1, -1 * motorPower, 1 * motorPower);
-               }
-
-               else if (motorSteer < 0)
-               {
-                   rightEngine = motorPower;
-                   leftEngine = Map(motorSteer, -1, 0, -1 * motorPower, 1 * motorPower);
-               }
-               else
-               {
-                   leftEngine = rightEngine = motorPower;
-               }
-               websocket.ControlBoat(leftEngine, rightEngine, rudder);
-               */
 
 
 

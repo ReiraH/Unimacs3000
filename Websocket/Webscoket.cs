@@ -59,7 +59,7 @@ namespace Websocket
             public string name;
         }
 
-        public Websocket(string adress)
+        public Websocket(string adress, string username, string password)
         {
 
 
