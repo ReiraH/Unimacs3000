@@ -53,6 +53,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ModBusReader\ModBusReader.csproj">
+      <Project>{46712564-0F52-4631-A807-B6E689389F91}</Project>
+      <Name>ModBusReader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Serialread\Serialread.csproj">
       <Project>{bfcddf14-21c2-4ea0-8c96-cf829b9d92c6}</Project>
       <Name>Serialread</Name>

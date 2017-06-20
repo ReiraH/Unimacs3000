@@ -203,14 +203,19 @@ namespace Websocket
 
             if (leftEngine < -1 || leftEngine > 1 || rightEngine < -1 || rightEngine > 1 || rudder < -1 || rudder > 1)
             {
-                throw new ArgumentOutOfRangeException("ControlBoat must be called with all parameters between 0 and 1.");
+                leftEngine = Math.Max(-1, leftEngine);
+                leftEngine = Math.Min(1, leftEngine);
+                rightEngine = Math.Max(-1, rightEngine);
+                rightEngine = Math.Min(1, rightEngine);
+                rudder = Math.Max(-1, rudder);
+                rudder = Math.Min(1, rudder);
             }
 
             if(boatSelected == null)
             {
                 //throw new InvalidOperationException("There isn't a selected boat.");
-                Console.WriteLine("No boat connected yet!");
-                //Console.WriteLine(leftEngine + " - "+ rightEngine + " - " + rudder);
+                //Console.WriteLine("No boat connected yet!");
+                Console.WriteLine(leftEngine + " - "+ rightEngine + " - " + rudder);
                 return;
             }
             MotionMessage message = new MotionMessage()
@@ -227,7 +232,7 @@ namespace Websocket
             
             string json = JsonConvert.SerializeObject(message, Formatting.Indented);
             Console.WriteLine(json);
-            socket.Emit("controller", json);
+            //socket.Emit("controller", json);
 
 
 
