@@ -12,7 +12,7 @@ namespace serialread
 {
     public class InputController
     {
-        public class SerialInput
+        private class SerialInput
         {
             public int setAngle = 0;
             public int setSpeed = 0;
@@ -189,9 +189,27 @@ namespace serialread
 
         public void InputHandler()
         {
+            SerialInput currentSerialInput;
+            ModbusInput currentModbusInput;
             while (true)
             {
+                //get new input
+                lock (serialInput)
+                {
+                    currentSerialInput = serialInput;
+                }
+
+                lock (modbusInput)
+                {
+                    currentModbusInput = modbusInput;
+                }
+
+                //control the boat
                 ControlBoat();
+
+                //do other input functions
+
+                //sleep
                 Thread.Sleep(2);
             }
         }
