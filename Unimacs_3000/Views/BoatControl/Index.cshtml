@@ -24,7 +24,6 @@
                 bar.path.setAttribute('stroke', state.color);
             }
         });
-        bar.set(0);  // Number from 0.0 to 1.0
 
         var bar2 = new ProgressBar.Line(bar_container2, {
             strokeWidth: 4,
@@ -40,7 +39,6 @@
                 bar2.path.setAttribute('stroke', state.color);
             }
         });
-        bar2.animate(0);
 
     function updateBoatControlData() {
         var options = {};
@@ -48,9 +46,17 @@
         options.type = "POST";
         options.dataType = "json";
         options.success = function (response) {
-            if (isFloat(response.data))
+            if (response.result == 'UpdateData')
             {
-                bar2.animate(response.data);
+                var leftEngineValue = response.leftEngine;
+                if (leftEngineValue > 0)
+                {
+                    bar2.set(0);
+                }
+                else
+                {
+                    bar.set(-1);                    
+                }
                 setTimeout(updateBoatControlData, 100);
             }
             else if (response.result == 'DoNothing')

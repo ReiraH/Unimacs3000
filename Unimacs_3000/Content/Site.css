@@ -36,8 +36,8 @@ p.navbar-text{
 
 #parent {
     display: flex;
-    transform:rotate(90deg);
-    width:40px;
+    /*transform:rotate(90deg);*/
+    width: 40px;
 }
 
 #bar_container {

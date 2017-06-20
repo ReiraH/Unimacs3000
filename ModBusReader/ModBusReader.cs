@@ -57,6 +57,7 @@ namespace ModBusReader
                     oldRightHandle = rightHandle;
                     oldRLeftHandle = leftHandle;
                     oldWheel = wheel;
+                    Console.WriteLine(leftHandle + " - " + rightHandle + " - " + wheel);
                     System.Threading.Thread.Sleep(100);
 
                 }

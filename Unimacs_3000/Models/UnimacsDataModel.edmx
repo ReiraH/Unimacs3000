@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="UnimacsModelNamespace.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BoatMotion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeftEngineValue" Type="float" Nullable="false" />
+          <Property Name="RightEngineValue" Type="float" Nullable="false" />
+          <Property Name="RudderValue" Type="float" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Pages">
           <Key>
             <PropertyRef Name="id" />
@@ -63,6 +73,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="UnimacsModelNamespaceStoreContainer">
+          <EntitySet Name="BoatMotion" EntityType="Self.BoatMotion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Screens" EntityType="Self.Screens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScreenSettings" EntityType="Self.ScreenSettings" Schema="dbo" store:Type="Tables" />
@@ -154,7 +165,18 @@
             <End Role="Screens" EntitySet="Screens" />
             <End Role="ScreenSettings" EntitySet="ScreenSettings" />
           </AssociationSet>
+          <EntitySet Name="BoatMotions" EntityType="UnimacsModelNamespace.BoatMotion" />
         </EntityContainer>
+        <EntityType Name="BoatMotion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeftEngineValue" Type="Double" Nullable="false" />
+          <Property Name="RightEngineValue" Type="Double" Nullable="false" />
+          <Property Name="RudderValue" Type="Double" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -198,6 +220,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BoatMotions">
+            <EntityTypeMapping TypeName="UnimacsModelNamespace.BoatMotion">
+              <MappingFragment StoreEntitySet="BoatMotion">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="RudderValue" ColumnName="RudderValue" />
+                <ScalarProperty Name="RightEngineValue" ColumnName="RightEngineValue" />
+                <ScalarProperty Name="LeftEngineValue" ColumnName="LeftEngineValue" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -212,7 +245,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
