@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Fakes Include="Fakes\NModbus4.fakes" />
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
