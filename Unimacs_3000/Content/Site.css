@@ -36,18 +36,23 @@ p.navbar-text{
 
 #parent {
     display: flex;
-    /*transform:rotate(90deg);*/
-    width: 40px;
+    transform:rotate(90deg);
+    width: 30%;
+    margin-top:20%;
 }
 
 #bar_container {
     float: left;
     width: 200px;
     height: 32px;
+    border : 1px solid black;
+    border-right:none;
 }
 
 #bar_container2 {
     float: left;
     width: 200px;
     height: 32px;
+    border: 1px solid black;
+    border-left: none;
 }

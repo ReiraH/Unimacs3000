@@ -9,24 +9,24 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        setTimeout(updateBoatControlData, 10);
+        updateBoatControlData(0,0,0);
         var bar = new ProgressBar.Line(bar_container, {
-            strokeWidth: 4,
+            strokeWidth: 1,
             easing: 'easeInOut',
             duration: 500,
             color: '#FFEA82',
             trailColor: '#eee',
             trailWidth: 1,
             svgStyle: { width: '100%', height: '100%' },
-            from: { color: '#FFEA82' },
-            to: { color: '#ED6A5A' },
+            from: { color: '#ED6A5A' },
+            to: { color: '#FFEA82' },
             step: (state, bar) => {
                 bar.path.setAttribute('stroke', state.color);
             }
         });
 
         var bar2 = new ProgressBar.Line(bar_container2, {
-            strokeWidth: 4,
+            strokeWidth: 1,
             easing: 'easeInOut',
             duration: 500,
             color: '#FFEA82',
@@ -34,34 +34,39 @@
             trailWidth: 1,
             svgStyle: { width: '100%', height: '100%' },
             from: { color: '#FFEA82' },
-            to: { color: '#ED6A5A' },
+            to: { color: '#FFEA82' },
             step: (state, bar2) => {
                 bar2.path.setAttribute('stroke', state.color);
             }
         });
-
-    function updateBoatControlData() {
+        
+        function updateBoatControlData(oldLeftEngineValue,oldRightEngineValue,oldRudderValue) {
         var options = {};
         options.url = '@Url.Action("checkBoatData", "BoatControl")';
         options.type = "POST";
         options.dataType = "json";
+        options.data = { "oldValues": [oldLeftEngineValue, oldRightEngineValue, oldRudderValue] };
         options.success = function (response) {
             if (response.result == 'UpdateData')
             {
                 var leftEngineValue = response.leftEngine;
+                var rightEngineValue = response.rightEngine;
+                var rudderValue = response.rudder;
                 if (leftEngineValue > 0)
                 {
                     bar2.set(0);
+                    bar.set(leftEngineValue * -1);
                 }
                 else
                 {
-                    bar.set(-1);                    
+                    bar.set(0);
+                    bar2.set(leftEngineValue * -1);                    
                 }
-                setTimeout(updateBoatControlData, 100);
+                setTimeout(updateBoatControlData(leftEngineValue, rightEngineValue, rudderValue), 100);
             }
             else if (response.result == 'DoNothing')
             {
-                setTimeout(updateBoatControlData, 100);
+                setTimeout(updateBoatControlData(leftEngineValue, rightEngineValue,rudderValue), 100);
             }
         };
         options.error = function (xhr, status, error) {
