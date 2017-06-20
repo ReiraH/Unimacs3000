@@ -56,6 +56,10 @@ namespace serialread
             Boolean _continue = true;
             String message;
             String joystickControlZAndSum;
+            String joystickswitch;
+            int switchX;
+            int switchY;
+            int switchZ;
 
             serial.Open();
             while (_continue)
@@ -65,24 +69,28 @@ namespace serialread
                     message = serial.ReadLine();
                     IList<string> serialsplit = message.Split(',').ToList<string>();
                     // testen of het splitten goed is gegaan
-
-                    serialInput["setAngle"] = Convert.ToInt32(serialsplit[3]);
-                    serialInput["setSpeed"] = Convert.ToInt32(serialsplit[5]);
-                    serialInput["buttons"] = Convert.ToInt32(serialsplit[6]);
-                    serialInput["joystickSwitch"] = Convert.ToInt32(serialsplit[10]);
+                    
+                    dictionary["setAngle"] = Convert.ToInt32(serialsplit[3]);
+                    dictionary["setSpeed"] = Convert.ToInt32(serialsplit[5]);
+                    dictionary["buttons"] = Convert.ToInt32(serialsplit[6]);
                     double joystickX = Convert.ToDouble(serialsplit[11]);
                     double joystickY = Convert.ToDouble(serialsplit[12]);
                     joystickControlZAndSum = serialsplit[13];
                     IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
                     double joystickZ = Convert.ToDouble(joystickZsplitter[0]);
+                    joystickswitch = serialsplit[10];
+                    joystickswitch.ToCharArray();
+                    switchX = joystickswitch[0];
+                    switchY = joystickswitch[1];
+                    switchZ = joystickswitch[2];
 
-                    if (dictionary["joystickSwitch"] = 1000000) { dictionary["joystickX"] = 0; }
+                    if (switchX ==1) { dictionary["joystickX"] = 0; }
                     else{dictionary["joystickX"] = Map(joystickX, -950, 1100, -1, 1);}
 
-                    if (dictionary["joystickSwitch"] = 0100000) { dictionary["joystickY"] = 0; }
+                    if (switchY==1){ dictionary["joystickY"] = 0; }
                     else { dictionary["joystickY"] = Map(joystickY, -900, 900, -1, 1); }
 
-                    if (dictionary["joystickSwitch"] = 0010000) { dictionary["joystickZ"] = 0; }
+                    if (switchZ == 1) { dictionary["joystickZ"] = 0; }
                     else { dictionary["joystickZ"] = Map(joystickZ, -850, 950, -1, 1); }
                     
                     //Console.WriteLine("setAngle: "+ dictionary["setAngle"]);
