@@ -17,8 +17,8 @@ namespace serialread
             {"setAngle", 0.0},
             {"setSpeed", 0.0},
             {"buttons", -1},
-            {"joystickY", 0.0},
             {"joystickX", 0.0},
+            {"joystickY", 0.0},
             {"joystickZ", 0.0}
 
         };
@@ -50,16 +50,15 @@ namespace serialread
 
         private void SerialReader()
         {
-            
+
             SerialPort serial = new SerialPort(Properties.Settings.Default.ComPoort, 9600);
             Thread.Sleep(50);
             Boolean _continue = true;
             String message;
-            String joystickControlZAndSum;
-            String joystickswitch;
-            int switchX;
-            int switchY;
-            int switchZ;
+            double joystickX;
+            double joystickY;
+            double joystickZ;
+
 
             serial.Open();
             while (_continue)
@@ -67,36 +66,51 @@ namespace serialread
                 try
                 {
                     message = serial.ReadLine();
-                    IList<string> serialsplit = message.Split(',').ToList<string>();
+                    IList<String> serialsplitWithChecksum = message.Split('*').ToList<String>();
+
+                    IList<string> serialsplit = serialsplitWithChecksum[0].Split(',').ToList<string>();
                     // testen of het splitten goed is gegaan
-                    
-                    dictionary["setAngle"] = Convert.ToInt32(serialsplit[3]);
-                    dictionary["setSpeed"] = Convert.ToInt32(serialsplit[5]);
-                    dictionary["buttons"] = Convert.ToInt32(serialsplit[6]);
-                    double joystickX = Convert.ToDouble(serialsplit[11]);
-                    double joystickY = Convert.ToDouble(serialsplit[12]);
-                    joystickControlZAndSum = serialsplit[13];
-                    IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
-                    double joystickZ = Convert.ToDouble(joystickZsplitter[0]);
-                    joystickswitch = serialsplit[10];
-                    joystickswitch.ToCharArray();
-                    switchX = joystickswitch[0];
-                    switchY = joystickswitch[1];
-                    switchZ = joystickswitch[2];
 
-                    if (switchX ==1) { dictionary["joystickX"] = 0; }
-                    else{dictionary["joystickX"] = Map(joystickX, -950, 1100, -1, 1);}
+                    int setAngle = Convert.ToInt32(serialsplit[3]);
+                    int setSpeed = Convert.ToInt32(serialsplit[5]);
+                    int buttons = Convert.ToInt32(serialsplit[6]);
 
-                    if (switchY==1){ dictionary["joystickY"] = 0; }
-                    else { dictionary["joystickY"] = Map(joystickY, -900, 900, -1, 1); }
+                    double rawJoystickX = Convert.ToDouble(serialsplit[11]);
+                    double rawJoystickY = Convert.ToDouble(serialsplit[12]);
+                    double rawJoystickZ = Convert.ToDouble(serialsplit[13]);
+                    char[] joystickswitch = serialsplit[10].ToCharArray();
+                    int switchX = joystickswitch[0];
+                    int switchY = joystickswitch[1];
+                    int switchZ = joystickswitch[2];
 
-                    if (switchZ == 1) { dictionary["joystickZ"] = 0; }
-                    else { dictionary["joystickZ"] = Map(joystickZ, -850, 950, -1, 1); }
-                    
-                    //Console.WriteLine("setAngle: "+ dictionary["setAngle"]);
-                    Console.WriteLine("buttons: " + serialInput["buttons"]);
 
-                    //websocket.ControlBoat(dictionary["joystickX"], dictionary[" joystickX"], dictionary[" joystickY"]);
+                    //deadzone en conversion naar een double tussen -1 en 1
+                    if (switchX == 1) { joystickX = 0; }
+                    else { joystickX = Map(rawJoystickX, -950, 1100, -1, 1); }
+
+                    if (switchY == 1) { joystickY = 0; }
+                    else { joystickY = Map(rawJoystickY, -900, 900, -1, 1); }
+
+                    if (switchZ == 1) { joystickZ = 0; }
+                    else { joystickZ = Map(rawJoystickZ, -850, 950, -1, 1); }
+
+                    //create new dictionary
+                    Dictionary<string, dynamic> newSerialInput = new Dictionary<string, dynamic>
+                    {
+                        {"buttons", buttons},
+                        {"setAngle", setAngle},
+                        {"setSpeed", setSpeed},
+                        {"joystickX", joystickX},
+                        { "joystickY", joystickY},
+                        {"joystickZ", joystickZ},
+
+                    };
+
+                    //update 
+                    lock (serialInput)
+                    {
+                        serialInput = newSerialInput;
+                    }
 
                 }
 
@@ -164,7 +178,8 @@ namespace serialread
             return b1 + (value - a1) * (b2 - b1) / (a2 - a1);
         }
 
-        public void InputHandler() {
+        public void InputHandler()
+        {
             while (true)
             {
                 ControlBoat();
