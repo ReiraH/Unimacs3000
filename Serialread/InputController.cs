@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Modbus.Device;
+using System.Net.Sockets;
 
 namespace serialread
 {
     public class InputController
     {
-        Dictionary<string, dynamic> dictionary = new Dictionary<string, dynamic>
+        Dictionary<string, dynamic> serialInput = new Dictionary<string, dynamic>
         {
             {"setAngle", 0.0},
             {"setSpeed", 0.0},
@@ -21,20 +23,31 @@ namespace serialread
 
         };
 
+        Dictionary<string, dynamic> modbusInput = new Dictionary<string, dynamic>
+        {
+            {"wheel", 0.0 },
+            {"leftHandle", 0.0 },
+            {"rightHandle", 0.0 }
+        };
+
         Websocket.Websocket websocket;
 
         public InputController(Websocket.Websocket websocket)
         {
             this.websocket = websocket;
-            StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
-            Task readThread = new Task(Read);
-            readThread.Start();
+
+            Task serialReader = new Task(SerialReader);
+            serialReader.Start();
+
+            Task modbusReader = new Task()
+
+
             Task inputHandler = new Task(InputHandler);
             inputHandler.Start();
 
         }
 
-        public void Read()
+        private void SerialReader()
         {
             SerialPort serial = new SerialPort("COM4", 9600);
             Thread.Sleep(50);
@@ -51,10 +64,10 @@ namespace serialread
                     IList<string> serialsplit = message.Split(',').ToList<string>();
                     // testen of het splitten goed is gegaan
 
-                    dictionary["setAngle"] = Convert.ToInt32(serialsplit[3]);
-                    dictionary["setSpeed"] = Convert.ToInt32(serialsplit[5]);
-                    dictionary["buttons"] = Convert.ToInt32(serialsplit[6]);
-                    dictionary["joystickSwitch"] = Convert.ToInt32(serialsplit[10]);
+                    serialInput["setAngle"] = Convert.ToInt32(serialsplit[3]);
+                    serialInput["setSpeed"] = Convert.ToInt32(serialsplit[5]);
+                    serialInput["buttons"] = Convert.ToInt32(serialsplit[6]);
+                    serialInput["joystickSwitch"] = Convert.ToInt32(serialsplit[10]);
                     double joystickX = Convert.ToDouble(serialsplit[11]);
                     double joystickY = Convert.ToDouble(serialsplit[12]);
                     joystickControlZAndSum = serialsplit[13];
@@ -63,12 +76,12 @@ namespace serialread
 
                     if (true)
                     {
-                        dictionary["joystickX"] = Map(joystickX, -950, 1100, -1, 1);
-                        dictionary["joystickY"] = Map(joystickY, -900, 900, -1, 1);
-                        dictionary["joystickZ"] = Map(Convert.ToDouble(joystickZ), -850, 950, -1, 1);
+                        serialInput["joystickX"] = Map(joystickX, -950, 1100, -1, 1);
+                        serialInput["joystickY"] = Map(joystickY, -900, 900, -1, 1);
+                        serialInput["joystickZ"] = Map(Convert.ToDouble(joystickZ), -850, 950, -1, 1);
                     }
                     //Console.WriteLine("setAngle: "+ dictionary["setAngle"]);
-                    Console.WriteLine("buttons: " + dictionary["buttons"]);
+                    Console.WriteLine("buttons: " + serialInput["buttons"]);
 
                     //websocket.ControlBoat(dictionary["joystickX"], dictionary[" joystickX"], dictionary[" joystickY"]);
 
@@ -77,7 +90,21 @@ namespace serialread
                 catch (Exception) { }
             }
         }
-        double Map(double value, double a1, double a2, double b1, double b2)
+        private void ModbusReader()
+        {
+            TcpClient client = new TcpClient("10.0.0.21", 502);
+            ModbusIpMaster master = ModbusIpMaster.CreateIp(client);
+            Boolean _continue = true;
+
+            while (_continue)
+            {
+
+            }
+
+        }
+
+
+        private double Map(double value, double a1, double a2, double b1, double b2)
         {
             return b1 + (value - a1) * (b2 - b1) / (a2 - a1);
         }
