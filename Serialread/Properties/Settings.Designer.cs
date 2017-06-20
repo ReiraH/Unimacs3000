@@ -25,42 +25,6 @@ namespace serialread.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("joystickZ")]
-        public string Rudder {
-            get {
-                return ((string)(this["Rudder"]));
-            }
-            set {
-                this["Rudder"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("joystickY")]
-        public string MotorPower {
-            get {
-                return ((string)(this["MotorPower"]));
-            }
-            set {
-                this["MotorPower"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("joystickX")]
-        public string MotorSteer {
-            get {
-                return ((string)(this["MotorSteer"]));
-            }
-            set {
-                this["MotorSteer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("COM4")]
         public string ComPoort {
             get {
@@ -68,6 +32,54 @@ namespace serialread.Properties {
             }
             set {
                 this["ComPoort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("JoystickWheel")]
+        public string ControlMode {
+            get {
+                return ((string)(this["ControlMode"]));
+            }
+            set {
+                this["ControlMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int SwitchToJoystick {
+            get {
+                return ((int)(this["SwitchToJoystick"]));
+            }
+            set {
+                this["SwitchToJoystick"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("11")]
+        public int SwitchToJoystickWheel {
+            get {
+                return ((int)(this["SwitchToJoystickWheel"]));
+            }
+            set {
+                this["SwitchToJoystickWheel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("13")]
+        public int SwitchToLeverWheel {
+            get {
+                return ((int)(this["SwitchToLeverWheel"]));
+            }
+            set {
+                this["SwitchToLeverWheel"] = value;
             }
         }
     }

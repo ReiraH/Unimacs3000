@@ -33,6 +33,9 @@ namespace serialread
         private Websocket.Websocket websocket;
         private SerialInput serialInput = new SerialInput();
         private ModbusInput modbusInput = new ModbusInput();
+        private double oldLeftEngine = 0;
+        private double oldRightEngine = 0;
+        private double oldRudder = 0;
 
 
 
@@ -52,6 +55,12 @@ namespace serialread
 
         }
 
+
+        private double Map(double value, double a1, double a2, double b1, double b2)
+        {
+            return b1 + (value - a1) * (b2 - b1) / (a2 - a1);
+        }
+
         private void SerialReader()
         {
 
@@ -69,6 +78,7 @@ namespace serialread
             {
                 try
                 {
+
                     message = serial.ReadLine();
                     IList<String> serialsplitWithChecksum = message.Split('*').ToList<String>();
 
@@ -99,7 +109,6 @@ namespace serialread
                     else { joystickZ = Map(rawJoystickZ, -850, 950, -1, 1); }
 
                     //create new dictionary
-                    
                     SerialInput newSerialInput = new SerialInput()
                     {
                         setAngle = setAngle,
@@ -110,18 +119,17 @@ namespace serialread
                         joystickZ = joystickZ,
 
                     };
-                    
 
-                   
                     //update 
                     lock (serialInput)
                     {
                         serialInput = newSerialInput;
                     }
+                }
+                catch(Exception e)
+                {
 
                 }
-
-                catch (Exception) { }
             }
         }
 
@@ -181,12 +189,6 @@ namespace serialread
 
         }
 
-
-        private double Map(double value, double a1, double a2, double b1, double b2)
-        {
-            return b1 + (value - a1) * (b2 - b1) / (a2 - a1);
-        }
-
         public void InputHandler()
         {
             SerialInput currentSerialInput;
@@ -205,39 +207,111 @@ namespace serialread
                 }
 
                 //control the boat
-                ControlBoat();
+                ControlBoat(currentSerialInput, currentModbusInput);
 
                 //do other input functions
+                ChangeControls(currentSerialInput, currentModbusInput);
 
                 //sleep
                 Thread.Sleep(2);
             }
         }
-        private void ControlBoat()
+        private void ControlBoat(SerialInput serial, ModbusInput modbus)
         {
-            double motorPower = serialInput[Properties.Settings.Default.MotorPower];
-            double motorSteer = serialInput[Properties.Settings.Default.MotorSteer];
-            double rudder = serialInput[Properties.Settings.Default.Rudder];
-            Console.WriteLine("Inputhandler: " + motorPower + " - " + motorSteer);
-            double leftEngine;
-            double rightEngine;
+            double leftEngine = 0;
+            double rightEngine = 0;
+            double rudder = 0;
 
-            if (motorSteer > 0)
+            string mode = Properties.Settings.Default.ControlMode;
+
+            if (mode == "joystick")
             {
-                leftEngine = motorPower;
-                rightEngine = -1 * Map(motorSteer, 0, 1, -1 * motorPower, 1 * motorPower);
+                Joystick();
             }
-
-            else if (motorSteer < 0)
+            else if ( mode == "joystickWheel")
             {
-                rightEngine = motorPower;
-                leftEngine = Map(motorSteer, -1, 0, -1 * motorPower, 1 * motorPower);
+                JoystickWheel();
+            }
+            else if ( mode == "leverWheel")
+            {
+                LeverWheel();
             }
             else
             {
-                leftEngine = rightEngine = motorPower;
+                Console.WriteLine("Control Mode not recognised!");
             }
-            websocket.ControlBoat(leftEngine, rightEngine, rudder);
+
+            if(leftEngine != oldLeftEngine | rightEngine != oldRightEngine | rudder != oldRudder)
+            {
+                websocket.ControlBoat(leftEngine, rightEngine, rudder);
+                oldLeftEngine = leftEngine;
+                oldRightEngine = rightEngine;
+                oldRudder = rudder;
+            }
+
+
+            void Joystick()
+            {
+                if (serial.joystickX > 0)
+                {
+                    leftEngine = serial.joystickY;
+                    rightEngine = -1 * Map(serial.joystickX, 0, 1, -1 * serial.joystickY, 1 * serial.joystickY);
+                }
+
+                else if (serial.joystickX < 0)
+                {
+                    rightEngine = serial.joystickY;
+                    leftEngine = Map(serial.joystickX, -1, 0, -1 * serial.joystickY, 1 * serial.joystickY);
+                }
+                else
+                {
+                    leftEngine = rightEngine = serial.joystickY;
+                }
+
+                rudder = serial.joystickZ;
+            }
+
+            void JoystickWheel()
+            {
+                if (serial.joystickX > 0)
+                {
+                    leftEngine = serial.joystickY;
+                    rightEngine = -1 * Map(serial.joystickX, 0, 1, -1 * serial.joystickY, 1 * serial.joystickY);
+                }
+
+                else if (serial.joystickX < 0)
+                {
+                    rightEngine = serial.joystickY;
+                    leftEngine = Map(serial.joystickX, -1, 0, -1 * serial.joystickY, 1 * serial.joystickY);
+                }
+                else
+                {
+                    leftEngine = rightEngine = serial.joystickY;
+                }
+
+                rudder = modbus.wheel;
+            }
+            
+            void LeverWheel()
+            {
+                leftEngine = modbus.leftHandle;
+                rightEngine = modbus.rightHandle;
+                rudder = modbus.wheel;
+            }
+        }
+
+        private void ChangeControls(SerialInput serial, ModbusInput modbus)
+        {
+            int joystick = Properties.Settings.Default.SwitchToJoystick;
+            int joystickWheel = Properties.Settings.Default.SwitchToJoystickWheel;
+            int leverWheel = Properties.Settings.Default.SwitchToLeverWheel;
+            if (serial.buttons == joystick)
+                Properties.Settings.Default.ControlMode = "joystick";
+            else if (serial.buttons == joystickWheel)
+                Properties.Settings.Default.ControlMode = "joystickWheel";
+            else if (serial.buttons == leverWheel)
+                Properties.Settings.Default.ControlMode = "leverWheel";
+
         }
     }
 }

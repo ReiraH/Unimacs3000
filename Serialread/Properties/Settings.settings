@@ -2,17 +2,20 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="serialread.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Rudder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">joystickZ</Value>
-    </Setting>
-    <Setting Name="MotorPower" Type="System.String" Scope="User">
-      <Value Profile="(Default)">joystickY</Value>
-    </Setting>
-    <Setting Name="MotorSteer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">joystickX</Value>
-    </Setting>
     <Setting Name="ComPoort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM4</Value>
+    </Setting>
+    <Setting Name="ControlMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">JoystickWheel</Value>
+    </Setting>
+    <Setting Name="SwitchToJoystick" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="SwitchToJoystickWheel" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">11</Value>
+    </Setting>
+    <Setting Name="SwitchToLeverWheel" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">13</Value>
     </Setting>
   </Settings>
 </SettingsFile>
