@@ -26,7 +26,6 @@ namespace serialread
         public InputController(Websocket.Websocket websocket)
         {
             this.websocket = websocket;
-            StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
             Task readThread = new Task(Read);
             readThread.Start();
             Task inputHandler = new Task(InputHandler);
@@ -61,11 +60,14 @@ namespace serialread
                     IList<String> joystickZsplitter = joystickControlZAndSum.Split('*').ToList<String>();
                     double joystickZ = Convert.ToDouble(joystickZsplitter[0]);
 
-                    if (true)
-                    {
+                    if(dictionary["joystickSwitch"]= 1000000)     { dictionary["joystickX"] = 0; }
+                    else if(dictionary["joystickSwitch"]= 0100000){ dictionary["joystickY"] = 0;}
+                    else if(dictionary["joystickSwitch"]= 0010000){dictionary["joystickZ"] = 0;}
+                    else
+                    { 
                         dictionary["joystickX"] = Map(joystickX, -950, 1100, -1, 1);
                         dictionary["joystickY"] = Map(joystickY, -900, 900, -1, 1);
-                        dictionary["joystickZ"] = Map(Convert.ToDouble(joystickZ), -850, 950, -1, 1);
+                        dictionary["joystickZ"] = Map(joystickZ, -850, 950, -1, 1);
                     }
                     //Console.WriteLine("setAngle: "+ dictionary["setAngle"]);
                     Console.WriteLine("buttons: " + dictionary["buttons"]);
