@@ -25,37 +25,61 @@ namespace serialread.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("joystickZ")]
-        public string Rudder {
+        [global::System.Configuration.DefaultSettingValueAttribute("COM4")]
+        public string ComPoort {
             get {
-                return ((string)(this["Rudder"]));
+                return ((string)(this["ComPoort"]));
             }
             set {
-                this["Rudder"] = value;
+                this["ComPoort"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("joystickY")]
-        public string MotorPower {
+        [global::System.Configuration.DefaultSettingValueAttribute("JoystickWheel")]
+        public string ControlMode {
             get {
-                return ((string)(this["MotorPower"]));
+                return ((string)(this["ControlMode"]));
             }
             set {
-                this["MotorPower"] = value;
+                this["ControlMode"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("joystickX")]
-        public string MotorSteer {
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int SwitchToJoystick {
             get {
-                return ((string)(this["MotorSteer"]));
+                return ((int)(this["SwitchToJoystick"]));
             }
             set {
-                this["MotorSteer"] = value;
+                this["SwitchToJoystick"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("11")]
+        public int SwitchToJoystickWheel {
+            get {
+                return ((int)(this["SwitchToJoystickWheel"]));
+            }
+            set {
+                this["SwitchToJoystickWheel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("13")]
+        public int SwitchToLeverWheel {
+            get {
+                return ((int)(this["SwitchToLeverWheel"]));
+            }
+            set {
+                this["SwitchToLeverWheel"] = value;
             }
         }
     }

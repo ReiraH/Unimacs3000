@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web.UI.WebControls.WebParts;
 
 using System.Net.Http;
-using Unimacs_3000.Models;
+//using Unimacs_3000.Models;
 
 namespace Websocket
 {
@@ -18,7 +18,7 @@ namespace Websocket
         private Socket socket;
         private string boatSelected;
         private List<Boat> boats = new List<Boat>();
-        private UnimacsContext db = new UnimacsContext();
+        //private UnimacsContext db = new UnimacsContext();
         public class MotionMessage
         {
            public string boat;
@@ -59,7 +59,7 @@ namespace Websocket
             public string name;
         }
 
-        public Websocket(string adress)
+        public Websocket(string adress, string username, string password)
         {
 
 
@@ -69,8 +69,8 @@ namespace Websocket
 
                 var parameters = new Dictionary<string, string>
                 {
-                    { "username", "scheepsbrug" },
-                    { "password", "unimax" }
+                    { "username", username },
+                    { "password", password }
                 };
 
                 var resp =  httpClient.PostAsync(adress+"/login", new FormUrlEncodedContent(parameters)).Result;
@@ -212,12 +212,12 @@ namespace Websocket
                 rudder = Math.Min(1, rudder);
             }
 
-            /*if(boatSelected == null)
+            if(boatSelected == null)
             {
                 //throw new InvalidOperationException("There isn't a selected boat.");
                 //Console.WriteLine("No boat connected yet!");
-                Console.WriteLine(leftEngine + " - "+ rightEngine + " - " + rudder);
-                return;
+                //Console.WriteLine(leftEngine + " - "+ rightEngine + " - " + rudder);
+                //return;
             }
             MotionMessage message = new MotionMessage()
             {
@@ -234,7 +234,8 @@ namespace Websocket
             string json = JsonConvert.SerializeObject(message, Formatting.Indented);
             Console.WriteLine(json);
             //socket.Emit("controller", json);
-            */
+            
+            /*
             BoatMotion boatMotion = new BoatMotion();
             boatMotion.LeftEngineValue = leftEngine;
             boatMotion.RightEngineValue = rightEngine;
@@ -242,6 +243,7 @@ namespace Websocket
             boatMotion.Timestamp = DateTime.Now;
             db.BoatMotions.Add(boatMotion);
             db.SaveChanges();
+            */
         }
 
     }
