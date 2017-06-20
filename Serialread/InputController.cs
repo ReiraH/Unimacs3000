@@ -12,25 +12,29 @@ namespace serialread
 {
     public class InputController
     {
-        private Dictionary<string, dynamic> serialInput = new Dictionary<string, dynamic>
+        public class SerialInput
         {
-            {"setAngle", 0.0},
-            {"setSpeed", 0.0},
-            {"buttons", -1},
-            {"joystickX", 0.0},
-            {"joystickY", 0.0},
-            {"joystickZ", 0.0}
+            public int setAngle = 0;
+            public int setSpeed = 0;
+            public int buttons = -1;
+            public double joystickX = 0;
+            public double joystickY = 0;
+            public double joystickZ = 0;
+        }
 
-        };
-
-        private Dictionary<string, dynamic> modbusInput = new Dictionary<string, dynamic>
+        private class ModbusInput
         {
-            {"wheel", 0.0 },
-            {"leftHandle", 0.0 },
-            {"rightHandle", 0.0 }
-        };
+            public double wheel = 0;
+            public double leftHandle = 0;
+            public double rightHandle = 0;
+        }
 
-        Websocket.Websocket websocket;
+
+        private Websocket.Websocket websocket;
+        private SerialInput serialInput = new SerialInput();
+        private ModbusInput modbusInput = new ModbusInput();
+
+
 
         public InputController(Websocket.Websocket websocket)
         {
@@ -69,7 +73,7 @@ namespace serialread
                     IList<String> serialsplitWithChecksum = message.Split('*').ToList<String>();
 
                     IList<string> serialsplit = serialsplitWithChecksum[0].Split(',').ToList<string>();
-                    // testen of het splitten goed is gegaan
+                    // TODO testen of het splitten goed is gegaan
 
                     int setAngle = Convert.ToInt32(serialsplit[3]);
                     int setSpeed = Convert.ToInt32(serialsplit[5]);
@@ -95,17 +99,20 @@ namespace serialread
                     else { joystickZ = Map(rawJoystickZ, -850, 950, -1, 1); }
 
                     //create new dictionary
-                    Dictionary<string, dynamic> newSerialInput = new Dictionary<string, dynamic>
+                    
+                    SerialInput newSerialInput = new SerialInput()
                     {
-                        {"buttons", buttons},
-                        {"setAngle", setAngle},
-                        {"setSpeed", setSpeed},
-                        {"joystickX", joystickX},
-                        { "joystickY", joystickY},
-                        {"joystickZ", joystickZ},
+                        setAngle = setAngle,
+                        setSpeed = setSpeed,
+                        buttons = buttons,
+                        joystickX = joystickX,
+                        joystickY = joystickY,
+                        joystickZ = joystickZ,
 
                     };
+                    
 
+                   
                     //update 
                     lock (serialInput)
                     {
@@ -117,6 +124,8 @@ namespace serialread
                 catch (Exception) { }
             }
         }
+
+
         private void ModbusReader()
         {
             TcpClient client = new TcpClient("10.0.0.21", 502);
@@ -150,11 +159,11 @@ namespace serialread
                 }
 
                 //create new dictionary
-                Dictionary<string, dynamic> newModbusInput = new Dictionary<string, dynamic>
+                ModbusInput newModbusInput = new ModbusInput()
                 {
-                    {"wheel", wheel },
-                    {"leftHandle", leftHandle },
-                    {"rightHandle", rightHandle }
+                    wheel = wheel,
+                    leftHandle = leftHandle,
+                    rightHandle = rightHandle,
                 };
 
                 //update 
