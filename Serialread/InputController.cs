@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Modbus.Device;
+using System.Net.Sockets;
 
 namespace serialread
 {
     public class InputController
     {
-        Dictionary<string, dynamic> dictionary = new Dictionary<string, dynamic>
+        private Dictionary<string, dynamic> serialInput = new Dictionary<string, dynamic>
         {
             {"setAngle", 0.0},
             {"setSpeed", 0.0},
@@ -21,19 +23,32 @@ namespace serialread
 
         };
 
+        private Dictionary<string, dynamic> modbusInput = new Dictionary<string, dynamic>
+        {
+            {"wheel", 0.0 },
+            {"leftHandle", 0.0 },
+            {"rightHandle", 0.0 }
+        };
+
         Websocket.Websocket websocket;
 
         public InputController(Websocket.Websocket websocket)
         {
             this.websocket = websocket;
-            Task readThread = new Task(Read);
-            readThread.Start();
+
+            Task serialReader = new Task(SerialReader);
+            serialReader.Start();
+
+            Task modbusReader = new Task(ModbusReader);
+            modbusReader.Start();
+
+
             Task inputHandler = new Task(InputHandler);
             inputHandler.Start();
 
         }
 
-        public void Read()
+        private void SerialReader()
         {
             
             SerialPort serial = new SerialPort(Properties.Settings.Default.ComPoort, 9600);
@@ -79,7 +94,7 @@ namespace serialread
                     else { dictionary["joystickZ"] = Map(joystickZ, -850, 950, -1, 1); }
                     
                     //Console.WriteLine("setAngle: "+ dictionary["setAngle"]);
-                    Console.WriteLine("buttons: " + dictionary["buttons"]);
+                    Console.WriteLine("buttons: " + serialInput["buttons"]);
 
                     //websocket.ControlBoat(dictionary["joystickX"], dictionary[" joystickX"], dictionary[" joystickY"]);
 
@@ -88,7 +103,63 @@ namespace serialread
                 catch (Exception) { }
             }
         }
-        double Map(double value, double a1, double a2, double b1, double b2)
+        private void ModbusReader()
+        {
+            TcpClient client = new TcpClient("10.0.0.21", 502);
+            ModbusIpMaster master = ModbusIpMaster.CreateIp(client);
+            Boolean _continue = true;
+
+            while (_continue)
+            {
+                //get raw values
+                ushort rawWheelValue = master.ReadInputRegisters(7, 1)[0];
+                ushort rawLeftHandleValue = master.ReadInputRegisters(4, 1)[0];
+                ushort rawRightHandleValue = master.ReadInputRegisters(5, 1)[0];
+
+                //convert to double between -1 and 1
+                Double wheel = Map(rawWheelValue, 5720, 17500, -1, 1);
+                Double leftHandle = Map(rawLeftHandleValue, 5728, 18824, -1, 1);
+                Double rightHandle = Map(rawRightHandleValue, 5728, 18888, -1, 1);
+
+                //deadzones
+                if (rightHandle < 0.02 && rightHandle > -0.02)
+                {
+                    rightHandle = 0;
+                }
+                if (leftHandle < 0.02 && leftHandle > -0.02)
+                {
+                    leftHandle = 0;
+                }
+                if (wheel < 0.175 && wheel > -0.175)
+                {
+                    wheel = 0;
+                }
+
+                //create new dictionary
+                Dictionary<string, dynamic> newModbusInput = new Dictionary<string, dynamic>
+                {
+                    {"wheel", wheel },
+                    {"leftHandle", leftHandle },
+                    {"rightHandle", rightHandle }
+                };
+
+                //update 
+                lock (modbusInput)
+                {
+                    modbusInput = newModbusInput;
+                }
+
+                //sleep
+                Thread.Sleep(1);
+
+
+
+            }
+
+        }
+
+
+        private double Map(double value, double a1, double a2, double b1, double b2)
         {
             return b1 + (value - a1) * (b2 - b1) / (a2 - a1);
         }
