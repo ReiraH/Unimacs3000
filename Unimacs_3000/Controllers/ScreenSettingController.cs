@@ -16,7 +16,7 @@ namespace Unimacs_3000.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult onChange(String currentController)
+        public ActionResult checkCurrentScreenPage(String currentController)
         {
             String pcName = User.Identity.Name;
             pcName = pcName.Split('\\')[1];

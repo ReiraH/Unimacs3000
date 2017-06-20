@@ -30,7 +30,24 @@ textarea {
 .navbar-nav > li > a {
     color: white !important;
 }
-p.navbar-text{
+p.navbar-text{  
     color: white !important;
 }
 
+#parent {
+    display: flex;
+    transform:rotate(90deg);
+    width:40px;
+}
+
+#bar_container {
+    float: left;
+    width: 200px;
+    height: 32px;
+}
+
+#bar_container2 {
+    float: left;
+    width: 200px;
+    height: 32px;
+}

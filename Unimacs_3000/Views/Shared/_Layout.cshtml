@@ -45,11 +45,11 @@
 
     <script type="text/javascript">
     $(document).ready(function () {
-        setTimeout(CheckStatus, 500);
+        setTimeout(checkCurrentScreenPage, 500);
     });
-    function CheckStatus() {
+        function checkCurrentScreenPage() {
         var options = {};
-        options.url = '@Url.Action("OnChange", "ScreenSetting")';
+        options.url = '@Url.Action("checkCurrentScreenPage", "ScreenSetting")';
         options.type = "POST";
         options.dataType = "json";
         options.data = {"currentController" : window.location.pathname };
@@ -60,7 +60,7 @@
             }
             else if (response.result == 'DoNothing')
             {
-                setTimeout(CheckStatus, 500);
+                setTimeout(checkCurrentScreenPage, 500);
             }
         };
         options.error = function (xhr, status, error) {
@@ -106,6 +106,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/progressbar.js")
     @RenderSection("scripts", required: false)
 </body>
 </html>
