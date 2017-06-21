@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="UnimacsModelNamespace.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Boat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="250" />
+          <Property Name="ControlMode" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="isActive" Type="tinyint" Nullable="false" />
+        </EntityType>
         <EntityType Name="BoatMotion">
           <Key>
             <PropertyRef Name="id" />
@@ -73,6 +82,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="UnimacsModelNamespaceStoreContainer">
+          <EntitySet Name="Boat" EntityType="Self.Boat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BoatMotion" EntityType="Self.BoatMotion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Screens" EntityType="Self.Screens" Schema="dbo" store:Type="Tables" />
@@ -166,6 +176,7 @@
             <End Role="ScreenSettings" EntitySet="ScreenSettings" />
           </AssociationSet>
           <EntitySet Name="BoatMotions" EntityType="UnimacsModelNamespace.BoatMotion" />
+          <EntitySet Name="Boats" EntityType="UnimacsModelNamespace.Boat" />
         </EntityContainer>
         <EntityType Name="BoatMotion">
           <Key>
@@ -176,6 +187,15 @@
           <Property Name="RightEngineValue" Type="Double" Nullable="false" />
           <Property Name="RudderValue" Type="Double" Nullable="false" />
           <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Boat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ControlMode" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Byte" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -227,6 +247,16 @@
                 <ScalarProperty Name="RudderValue" ColumnName="RudderValue" />
                 <ScalarProperty Name="RightEngineValue" ColumnName="RightEngineValue" />
                 <ScalarProperty Name="LeftEngineValue" ColumnName="LeftEngineValue" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Boats">
+            <EntityTypeMapping TypeName="UnimacsModelNamespace.Boat">
+              <MappingFragment StoreEntitySet="Boat">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="ControlMode" ColumnName="ControlMode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

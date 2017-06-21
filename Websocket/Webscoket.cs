@@ -235,7 +235,8 @@ namespace Websocket
             string json = JsonConvert.SerializeObject(message, Formatting.Indented);
             Console.WriteLine(json);
             //socket.Emit("controller", json);
-            
+
+            Boat boat = new Boat();
             
 
             BoatMotion boatMotion = new BoatMotion();

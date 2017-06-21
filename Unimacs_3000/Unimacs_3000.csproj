@@ -158,6 +158,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DistinctSensordataComparer.cs" />
+    <Compile Include="Models\Boat.cs">
+      <DependentUpon>UnimacsDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BoatMotion.cs">
       <DependentUpon>UnimacsDataModel.tt</DependentUpon>
     </Compile>
