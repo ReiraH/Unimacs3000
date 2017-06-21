@@ -34,25 +34,46 @@ p.navbar-text{
     color: white !important;
 }
 
-#parent {
+#rightEngineParentContainer, #leftEngineParentContainer {
     display: flex;
-    transform:rotate(90deg);
+    transform: rotate(90deg);
     width: 30%;
-    margin-top:20%;
+    margin-top: 20%;
+    margin-left: 5%;
 }
-
-#bar_container {
+#rudderBarParentContainer {
+    display: flex;
+    width: 30%;
+    margin-top: 10%;
+}
+#leftEngineBarContainer_positive, #rightEngineBarContainer_positive {
     float: left;
     width: 200px;
     height: 32px;
-    border : 1px solid black;
-    border-right:none;
+    border: 1px solid black;
+    border-right: none;
 }
 
-#bar_container2 {
+#leftEngineBarContainer_negative, #rightEngineBarContainer_negative {
     float: left;
     width: 200px;
     height: 32px;
     border: 1px solid black;
     border-left: none;
+}
+
+#progressBarlabel {
+    transform: rotate(-90deg);
+}
+
+#engineControlContainer {
+    width: 50%;
+    float: left;
+    margin: 10% 0;
+    display: flex;
+}
+#rudderBarContainer .progressbar-text {
+    top: inherit !important;
+    left: inherit !important;
+    color: black !important;
 }

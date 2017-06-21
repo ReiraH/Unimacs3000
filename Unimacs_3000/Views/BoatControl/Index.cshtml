@@ -1,16 +1,26 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
-<div id="parent">
-    <div id="bar_container"></div>
-    <div id="bar_container2"></div>
+<div id="engineControlContainer">
+    <div id="leftEngineParentContainer">
+        <div id="leftEngineBarContainer_positive"></div>
+        <div id="leftEngineBarContainer_negative"></div>
+        <p id="progressBarlabel">Leftengine</p>
+    </div>
+    <div id="rightEngineParentContainer">
+        <div id="rightEngineBarContainer_positive"></div>
+        <div id="rightEngineBarContainer_negative"></div>
+        <p id="progressBarlabel">Rightengine</p>
+    </div>
 </div>
-
+<div id="rudderBarParentContainer">
+    <div id="rudderBarContainer"></div>
+    <p id="rudderBarlabel">Rudder</p>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         updateBoatControlData(0,0,0);
-        var bar = new ProgressBar.Line(bar_container, {
+        var leftEngineBar_positive = new ProgressBar.Line(leftEngineBarContainer_positive, {
             strokeWidth: 1,
             easing: 'easeInOut',
             duration: 500,
@@ -20,12 +30,11 @@
             svgStyle: { width: '100%', height: '100%' },
             from: { color: '#ED6A5A' },
             to: { color: '#FFEA82' },
-            step: (state, bar) => {
-                bar.path.setAttribute('stroke', state.color);
+            step: (state, leftEngineBarContainer_positive) => {
+                leftEngineBarContainer_positive.path.setAttribute('stroke', state.color);
             }
         });
-
-        var bar2 = new ProgressBar.Line(bar_container2, {
+        var leftEngineBar_negative = new ProgressBar.Line(leftEngineBarContainer_negative, {
             strokeWidth: 1,
             easing: 'easeInOut',
             duration: 500,
@@ -35,11 +44,67 @@
             svgStyle: { width: '100%', height: '100%' },
             from: { color: '#FFEA82' },
             to: { color: '#FFEA82' },
-            step: (state, bar2) => {
-                bar2.path.setAttribute('stroke', state.color);
+            step: (state, leftEngineBarContainer_negative) => {
+                leftEngineBarContainer_negative.path.setAttribute('stroke', state.color);
             }
         });
-        
+
+        var rightEngineBar_positive = new ProgressBar.Line(rightEngineBarContainer_positive, {
+            strokeWidth: 1,
+            easing: 'easeInOut',
+            duration: 500,
+            color: '#FFEA82',
+            trailColor: '#eee',
+            trailWidth: 1,
+            svgStyle: { width: '100%', height: '100%' },
+            from: { color: '#ED6A5A' },
+            to: { color: '#FFEA82' },
+            step: (state, rightEngineBarContainer_positive) => {
+                rightEngineBarContainer_positive.path.setAttribute('stroke', state.color);
+            }
+        });
+        var rightEngineBar_negative = new ProgressBar.Line(rightEngineBarContainer_negative, {
+            strokeWidth: 1,
+            easing: 'easeInOut',
+            duration: 500,
+            color: '#FFEA82',
+            trailColor: '#eee',
+            trailWidth: 1,
+            svgStyle: { width: '100%', height: '100%' },
+            from: { color: '#FFEA82' },
+            to: { color: '#FFEA82' },
+            step: (state, rightEngineBarContainer_negative) => {
+                rightEngineBarContainer_negative.path.setAttribute('stroke', state.color);
+            }
+        });
+
+        var rudderBar = new ProgressBar.Circle(rudderBarContainer, {
+            color: '#aaa',
+            // This has to be the same size as the maximum width to
+            // prevent clipping
+            strokeWidth: 4,
+            trailWidth: 1,
+            easing: 'easeInOut',
+            duration: 1400,
+            text: {
+                autoStyleContainer: false
+            },
+            from: { color: '#aaa', width: 1 },
+            to: { color: '#333', width: 4 },
+            // Set default step function for all animate calls
+            step: function (state, circle) {
+                circle.path.setAttribute('stroke', state.color);
+                circle.path.setAttribute('stroke-width', state.width);
+
+                var value = circle.value();
+                if (value === 0) {
+                    circle.setText('');
+                } else {
+                    circle.setText(value);
+                }
+            }
+        });
+
         function updateBoatControlData(oldLeftEngineValue,oldRightEngineValue,oldRudderValue) {
         var options = {};
         options.url = '@Url.Action("checkBoatData", "BoatControl")';
@@ -54,14 +119,25 @@
                 var rudderValue = response.rudder;
                 if (leftEngineValue > 0)
                 {
-                    bar2.set(0);
-                    bar.set(leftEngineValue * -1);
+                    leftEngineBar_negative.set(0);
+                    leftEngineBar_positive.set(leftEngineValue * -1);
                 }
                 else
                 {
-                    bar.set(0);
-                    bar2.set(leftEngineValue * -1);                    
+                    leftEngineBar_positive.set(0);
+                    leftEngineBar_negative.set(leftEngineValue * -1);                    
                 }
+                if (rightEngineValue > 0)
+                {
+                    rightEngineBar_negative.set(0);
+                    rightEngineBar_positive.set(rightEngineValue * -1);
+                }
+                else
+                {
+                    rightEngineBar_positive.set(0);
+                    rightEngineBar_negative.set(rightEngineValue * -1);
+                }
+                rudderBar.set(rudderValue);
                 setTimeout(updateBoatControlData(leftEngineValue, rightEngineValue, rudderValue), 100);
             }
             else if (response.result == 'DoNothing')
@@ -73,7 +149,7 @@
             var err = eval("(" + xhr.responseText + ")");
             alert(err.Message);
         };
-        $.ajax(options)
+            $.ajax(options)
         }
         function isFloat(n) {
             return Number(n) === n && n % 1 !== 0;

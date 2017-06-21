@@ -22,6 +22,7 @@ namespace Unimacs_3000.Controllers
             Double leftEngine = Math.Round(boatMotion.LeftEngineValue, 2);
             Double rightEngine = Math.Round(boatMotion.RightEngineValue, 2);
             Double rudder = Math.Round(boatMotion.RudderValue, 2);
+
             if (oldValues != null)
             {
                 if (leftEngine == oldValues[0] && rightEngine == oldValues[1] && rudder == oldValues[2])
@@ -29,16 +30,14 @@ namespace Unimacs_3000.Controllers
                     return Json(new { result = "DoNothing" });
                 }
             }
-            return Json(
-                    new
-                    {
-                        result = "UpdateData",
-                        leftEngine = Math.Round(boatMotion.LeftEngineValue, 2),
-                        rightEngine = Math.Round(boatMotion.RightEngineValue, 2),
-                        rudder = Math.Round(boatMotion.RudderValue, 2),
-                    }
-                    );
-
+            return Json(new
+            {
+                result = "UpdateData",
+                leftEngine = Math.Round(boatMotion.LeftEngineValue, 2),
+                rightEngine = Math.Round(boatMotion.RightEngineValue, 2),
+                rudder = Math.Round(boatMotion.RudderValue, 2),
+            }
+            );     
         }
     }
 }
