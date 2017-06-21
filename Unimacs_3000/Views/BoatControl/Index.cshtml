@@ -24,13 +24,14 @@
             strokeWidth: 1,
             easing: 'easeInOut',
             duration: 500,
-            color: '#FFEA82',
+            color: '#000',
             trailColor: '#eee',
             trailWidth: 1,
             svgStyle: { width: '100%', height: '100%' },
             from: { color: '#ED6A5A' },
             to: { color: '#FFEA82' },
             step: (state, leftEngineBarContainer_positive) => {
+                leftEngineBarContainer_positive.setText(Math.abs(leftEngineBarContainer_positive.value()));
                 leftEngineBarContainer_positive.path.setAttribute('stroke', state.color);
             }
         });
@@ -38,13 +39,15 @@
             strokeWidth: 1,
             easing: 'easeInOut',
             duration: 500,
-            color: '#FFEA82',
+            color: '#000',
             trailColor: '#eee',
             trailWidth: 1,
             svgStyle: { width: '100%', height: '100%' },
             from: { color: '#FFEA82' },
             to: { color: '#FFEA82' },
             step: (state, leftEngineBarContainer_negative) => {
+                leftEngineBarContainer_negative.setText(leftEngineBarContainer_negative.value());
+
                 leftEngineBarContainer_negative.path.setAttribute('stroke', state.color);
             }
         });
@@ -53,13 +56,15 @@
             strokeWidth: 1,
             easing: 'easeInOut',
             duration: 500,
-            color: '#FFEA82',
+            color: '#000',
             trailColor: '#eee',
             trailWidth: 1,
             svgStyle: { width: '100%', height: '100%' },
             from: { color: '#ED6A5A' },
             to: { color: '#FFEA82' },
             step: (state, rightEngineBarContainer_positive) => {
+                rightEngineBarContainer_positive.setText(Math.abs(rightEngineBarContainer_positive.value()));
+
                 rightEngineBarContainer_positive.path.setAttribute('stroke', state.color);
             }
         });
@@ -67,40 +72,43 @@
             strokeWidth: 1,
             easing: 'easeInOut',
             duration: 500,
-            color: '#FFEA82',
+            color: '#000',
             trailColor: '#eee',
             trailWidth: 1,
             svgStyle: { width: '100%', height: '100%' },
             from: { color: '#FFEA82' },
             to: { color: '#FFEA82' },
             step: (state, rightEngineBarContainer_negative) => {
+                rightEngineBarContainer_negative.setText(rightEngineBarContainer_negative.value());
                 rightEngineBarContainer_negative.path.setAttribute('stroke', state.color);
             }
         });
 
         var rudderBar = new ProgressBar.Circle(rudderBarContainer, {
-            color: '#aaa',
+            color: '#000',
             // This has to be the same size as the maximum width to
             // prevent clipping
             strokeWidth: 4,
             trailWidth: 1,
+            trailColor: '#000',
             easing: 'easeInOut',
             duration: 1400,
             text: {
                 autoStyleContainer: false
             },
-            from: { color: '#aaa', width: 1 },
-            to: { color: '#333', width: 4 },
+            from: { color: '#ff00000', width: 4 },
+            to: { color: '#ff00000', width: 4 },
             // Set default step function for all animate calls
             step: function (state, circle) {
                 circle.path.setAttribute('stroke', state.color);
                 circle.path.setAttribute('stroke-width', state.width);
 
                 var value = circle.value();
-                if (value === 0) {
-                    circle.setText('');
+                var valuePercentage = Math.abs(Math.round(value * 100))
+                if (value >= 0) {
+                    circle.setText('Starboard ' + valuePercentage + '%');
                 } else {
-                    circle.setText(value);
+                    circle.setText('Portside ' + valuePercentage + '%');
                 }
             }
         });
