@@ -82,5 +82,29 @@ namespace serialread.Properties {
                 this["SwitchToLeverWheel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("17")]
+        public int ChangeBoat {
+            get {
+                return ((int)(this["ChangeBoat"]));
+            }
+            set {
+                this["ChangeBoat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("16")]
+        public int DeselectBoat {
+            get {
+                return ((int)(this["DeselectBoat"]));
+            }
+            set {
+                this["DeselectBoat"] = value;
+            }
+        }
     }
 }
