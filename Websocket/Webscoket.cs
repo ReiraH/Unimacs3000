@@ -87,7 +87,7 @@ namespace Websocket
                 throw new Exception("Login Error: " + token.error);
             }
             socket = IO.Socket(adress);
-f
+
             socket.On(Socket.EVENT_CONNECT, () =>
             {
                 Console.WriteLine("Connected, sending token for authentication");
@@ -237,18 +237,9 @@ f
                 }
             };
 
-            
-            string json = JsonConvert.SerializeObject(message, Formatting.Indented);
-            Console.WriteLine(json);
-            if (selectedBoat == null)
-            {
-                Console.WriteLine("No boat connected yet!");
-                return;
-            }
-            //socket.Emit("controller", json);
 
             Boat boat = new Boat();
-            
+
 
             BoatMotion boatMotion = new BoatMotion();
             boatMotion.LeftEngineValue = leftEngine;
@@ -257,6 +248,17 @@ f
             boatMotion.Timestamp = DateTime.Now;
             db.BoatMotions.Add(boatMotion);
             db.SaveChanges();
+
+
+            string json = JsonConvert.SerializeObject(message, Formatting.Indented);
+            Console.WriteLine(json);
+            if (selectedBoat == null)
+            {
+                Console.WriteLine("No boat connected yet!");
+                return;
+            }
+            socket.Emit("controller", json);
+
             
         }
 

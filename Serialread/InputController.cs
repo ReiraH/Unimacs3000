@@ -339,6 +339,25 @@ namespace serialread
                 websocket.DeselectBoat();
             }
         }
+
+        private void ChangeNavigationMode(SerialInput serial)
+        {
+            int changeToDeskMode = Properties.Settings.Default.ChangeToDeskMode;
+            int changeToQuayMode = Properties.Settings.Default.ChangeToQuayMode;
+            int changeToGPSMode = Properties.Settings.Default.ChangeToGPSMode;
+            if(changeToDeskMode == serial.buttons)
+            {
+                //
+            }
+            else if(changeToGPSMode == serial.buttons)
+            {
+                //
+            }
+            else if(changeToQuayMode == serial.buttons)
+            {
+                //
+            }
+        }
     }
 }
 
