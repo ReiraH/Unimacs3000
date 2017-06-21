@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.UI.WebControls.WebParts;
 
 using System.Net.Http;
+using Unimacs_3000.Models;
 //using Unimacs_3000.Models;
 
 namespace Websocket
@@ -18,7 +19,7 @@ namespace Websocket
         private Socket socket;
         private string boatSelected;
         private List<Boat> boats = new List<Boat>();
-        //private UnimacsContext db = new UnimacsContext();
+        private UnimacsContext db = new UnimacsContext();
         public class MotionMessage
         {
            public string boat;
@@ -235,7 +236,8 @@ namespace Websocket
             Console.WriteLine(json);
             //socket.Emit("controller", json);
             
-            /*
+            
+
             BoatMotion boatMotion = new BoatMotion();
             boatMotion.LeftEngineValue = leftEngine;
             boatMotion.RightEngineValue = rightEngine;
@@ -243,7 +245,7 @@ namespace Websocket
             boatMotion.Timestamp = DateTime.Now;
             db.BoatMotions.Add(boatMotion);
             db.SaveChanges();
-            */
+            
         }
 
     }

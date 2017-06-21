@@ -37,21 +37,20 @@ p.navbar-text{
 #rightEngineParentContainer, #leftEngineParentContainer {
     display: flex;
     transform: rotate(90deg);
-    width: 30%;
-    margin-top: 20%;
-    margin-left: 5%;
+    width: 100%;
+    margin-top: 35%;
+    margin-left: -35%;
 }
 #rudderBarParentContainer {
     display: flex;
-    width: 30%;
-    margin-top: 10%;
+    width: 50%;
+    margin: 10% 0 0 55%;
 }
 #leftEngineBarContainer_positive, #rightEngineBarContainer_positive {
     float: left;
     width: 200px;
     height: 32px;
     border: 1px solid black;
-    border-right: none;
 }
 
 #leftEngineBarContainer_negative, #rightEngineBarContainer_negative {
@@ -59,11 +58,11 @@ p.navbar-text{
     width: 200px;
     height: 32px;
     border: 1px solid black;
-    border-left: none;
 }
 
 #progressBarlabel {
     transform: rotate(-90deg);
+    font-size:2em;
 }
 
 #engineControlContainer {
@@ -72,8 +71,13 @@ p.navbar-text{
     margin: 10% 0;
     display: flex;
 }
-#rudderBarContainer .progressbar-text {
+#rudderBarContainer .progressbar-text, #rudderBarlabel {
     top: inherit !important;
     left: inherit !important;
     color: black !important;
+    font-size: 2em;
+}
+rudderBarContainer > path
+{
+    stroke:black!important;
 }
