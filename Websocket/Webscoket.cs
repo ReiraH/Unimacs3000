@@ -16,8 +16,8 @@ namespace Websocket
     public class Websocket
     {
         private Socket socket;
-        private string boatSelected;
-        private List<Boat> boats = new List<Boat>();
+        private string selectedBoat;
+        private List<Boat> connectedBoats = new List<Boat>();
         //private UnimacsContext db = new UnimacsContext();
         public class MotionMessage
         {
@@ -114,9 +114,9 @@ namespace Websocket
                 BoatsMessage message = JsonConvert.DeserializeObject<BoatsMessage>(data.ToString());
                 if (message.boats.Count > 0)
                 {
-                    boats = message.boats;
-                    boatSelected = boats[0].id;
-                    Console.WriteLine("Boat selected: "+boatSelected);
+                    connectedBoats = message.boats;
+                    selectedBoat = connectedBoats[0].id;
+                    Console.WriteLine("Boat selected: "+selectedBoat);
 
                 }
             });
@@ -126,11 +126,11 @@ namespace Websocket
                 Console.WriteLine("Boat connected:");
                 Console.WriteLine(data);
                 BoatMessage message = JsonConvert.DeserializeObject<BoatMessage>(data.ToString());
-                boats.Add(message.boat);
-                if(boats.Count == 1)
+                connectedBoats.Add(message.boat);
+                if(connectedBoats.Count == 1)
                 {
-                    boatSelected = boats[0].id;
-                    Console.WriteLine("Boat selected: " + boatSelected);
+                    selectedBoat = connectedBoats[0].id;
+                    Console.WriteLine("Boat selected: " + selectedBoat);
 
                 }
 
@@ -141,20 +141,20 @@ namespace Websocket
                 Console.WriteLine("Boat disconnected:");
                 Console.WriteLine(data);
                 BoatMessage message = JsonConvert.DeserializeObject<BoatMessage>(data.ToString());
-                boats.Remove(message.boat);
+                connectedBoats.RemoveAll(boat => boat.id == message.boat.id);
 
-                if(boatSelected == message.boat.id)
+                if(selectedBoat == message.boat.id)
                 {
                     Console.WriteLine("Disconnected Boat was the selected boat");
-                    if(boats.Count > 0)
+                    if(connectedBoats.Count > 0)
                     {
 
-                        boatSelected = boats[0].id;
-                        Console.WriteLine("Boat selected: "+boatSelected);
+                        selectedBoat = connectedBoats[0].id;
+                        Console.WriteLine("Boat selected: "+selectedBoat);
                     }
                     else
                     {
-                        boatSelected = null;
+                        selectedBoat = null;
                         Console.WriteLine("No boat selected.");
                     }
                     
@@ -186,14 +186,29 @@ namespace Websocket
 
         public void SelectBoat(string id)
         {
-            if(boats.Exists(obj => obj.id == id))
+            if(connectedBoats.Exists(boat => boat.id == id))
             {
-                boatSelected = id;
+                selectedBoat = id;
             }
             else
             {
                 Console.WriteLine("That boat isn't connected!");
             }
+        }
+
+        public void SelectNextBoat()
+        {
+            if(connectedBoats.Count > 0)
+            {
+                int indexCurrentBoat = connectedBoats.FindIndex(boat => boat.id == selectedBoat);
+                int nextIndex = indexCurrentBoat % connectedBoats.Count;
+                selectedBoat = connectedBoats[nextIndex].id;
+            }
+        }
+
+        public void DeselectBoat()
+        {
+            selectedBoat = null;
         }
 
         /*
@@ -212,16 +227,9 @@ namespace Websocket
                 rudder = Math.Min(1, rudder);
             }
 
-            if(boatSelected == null)
-            {
-                //throw new InvalidOperationException("There isn't a selected boat.");
-                //Console.WriteLine("No boat connected yet!");
-                //Console.WriteLine(leftEngine + " - "+ rightEngine + " - " + rudder);
-                //return;
-            }
             MotionMessage message = new MotionMessage()
             {
-                boat = boatSelected,
+                boat = selectedBoat,
                 motion = new MotionMessage.Motion()
                 {
                     leftEngine = leftEngine,
@@ -233,8 +241,13 @@ namespace Websocket
             
             string json = JsonConvert.SerializeObject(message, Formatting.Indented);
             Console.WriteLine(json);
+            if (selectedBoat == null)
+            {
+                Console.WriteLine("No boat connected yet!");
+                return;
+            }
             //socket.Emit("controller", json);
-            
+
             /*
             BoatMotion boatMotion = new BoatMotion();
             boatMotion.LeftEngineValue = leftEngine;
