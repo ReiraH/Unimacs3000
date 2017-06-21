@@ -87,8 +87,7 @@ namespace Websocket
                 throw new Exception("Login Error: " + token.error);
             }
             socket = IO.Socket(adress);
-
-
+f
             socket.On(Socket.EVENT_CONNECT, () =>
             {
                 Console.WriteLine("Connected, sending token for authentication");
