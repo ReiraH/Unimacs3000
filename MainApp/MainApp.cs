@@ -18,7 +18,7 @@ namespace MainApp
             //ModBusReader.ModBusReader reader = new ModBusReader.ModBusReader(websocket);
 
             Console.WriteLine("Press ESC to close the application.");
-            while (Console.ReadKey().Key != ConsoleKey.Escape) { }
+            while (Console.ReadKey().Key != ConsoleKey.Escape) { Thread.Sleep(5); }
         }
     }
 }

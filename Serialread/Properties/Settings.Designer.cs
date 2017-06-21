@@ -106,5 +106,41 @@ namespace serialread.Properties {
                 this["DeselectBoat"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public int ChangeToQuayMode {
+            get {
+                return ((int)(this["ChangeToQuayMode"]));
+            }
+            set {
+                this["ChangeToQuayMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int ChangeToGPSMode {
+            get {
+                return ((int)(this["ChangeToGPSMode"]));
+            }
+            set {
+                this["ChangeToGPSMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int ChangeToDeskMode {
+            get {
+                return ((int)(this["ChangeToDeskMode"]));
+            }
+            set {
+                this["ChangeToDeskMode"] = value;
+            }
+        }
     }
 }

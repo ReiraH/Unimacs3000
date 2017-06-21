@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<p id="controlMode"></p>
 <div id="engineControlContainer">
     <div id="leftEngineParentContainer">
         <div id="leftEngineBarContainer_positive"></div>
@@ -122,6 +123,7 @@
         options.success = function (response) {
             if (response.result == 'UpdateData')
             {
+                document.getElementById("controlMode").innerHTML = "Dummy"
                 var leftEngineValue = response.leftEngine;
                 var rightEngineValue = response.rightEngine;
                 var rudderValue = response.rudder;
