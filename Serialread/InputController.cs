@@ -21,7 +21,7 @@ namespace serialread
             public double joystickY = 0;
             public double joystickZ = 0;
         }
-
+        //
         private class ModbusInput
         {
             public double wheel = 0;
@@ -39,7 +39,9 @@ namespace serialread
         private int oldButton = -1;
 
 
-
+        /*
+         * 
+        */
         public InputController(Websocket.Websocket websocket)
         {
             this.websocket = websocket;
@@ -56,11 +58,17 @@ namespace serialread
 
         }
 
-
+       
+        /*
+         * method for letting an variable double lock between 2 chosen values
+         * input(variable you want to be locked, his lowest possible value,his highest value, the lowest value you want it to be, and the highest you want it to be)
+         * output is a double between your chosen b1 and b2
+        */
         private double Map(double value, double a1, double a2, double b1, double b2)
         {
             return b1 + (value - a1) * (b2 - b1) / (a2 - a1);
         }
+
 
         private void SerialReader()
         {
@@ -77,6 +85,11 @@ namespace serialread
             serial.Open();
             while (_continue)
             {
+
+                /*
+                 *  split the serialstring in parts and parse it as intergers or doubles
+                 * 
+                 */
                 try
                 {
 
@@ -85,12 +98,11 @@ namespace serialread
                     IList<String> serialsplitWithChecksum = message.Split('*').ToList<String>();
 
                     IList<string> serialsplit = serialsplitWithChecksum[0].Split(',').ToList<string>();
-                    // TODO testen of het splitten goed is gegaan
-
+                    
                     int setAngle = Convert.ToInt32(serialsplit[3]);
                     int setSpeed = Convert.ToInt32(serialsplit[5]);
                     int buttons = Convert.ToInt32(serialsplit[6]);
-
+                    
                     double rawJoystickX = Convert.ToDouble(serialsplit[11]);
                     double rawJoystickY = Convert.ToDouble(serialsplit[12]);
                     double rawJoystickZ = Convert.ToDouble(serialsplit[13]);
@@ -100,7 +112,7 @@ namespace serialread
                     int switchZ = joystickswitch[2];
 
 
-                    //deadzone en conversion naar een double tussen -1 en 1
+                    //deadzone and conversion to an double between -1, and 1 
                     if (switchX == '1') { joystickX = 0; }
                     else { joystickX = Map(rawJoystickX, -900, 1040, -1, 1); }
 
@@ -169,7 +181,7 @@ namespace serialread
                     wheel = 0;
                 }
 
-                //create new dictionary
+                //create new dictionary and let it update when the value is different
                 ModbusInput newModbusInput = new ModbusInput()
                 {
                     wheel = wheel,
@@ -191,7 +203,7 @@ namespace serialread
             }
 
         }
-
+        // handle all the input
         public void InputHandler()
         {
             SerialInput currentSerialInput;
@@ -209,7 +221,7 @@ namespace serialread
                     currentModbusInput = modbusInput;
                 }
 
-                //control the boat
+                //control the boat send it the serial data parts and current modbusinput
                 ControlBoat(currentSerialInput, currentModbusInput);
 
                 //do other input functions
@@ -217,12 +229,14 @@ namespace serialread
                 ChangeBoat(currentSerialInput);
                 DeselectBoat(currentSerialInput);
 
-
                 //sleep
                 oldButton = currentSerialInput.buttons;
                 Thread.Sleep(2);
             }
         }
+        /*
+         * boatcontrol expect an steer mode from the serialdata and controls boat with that mode 
+         */
         private void ControlBoat(SerialInput serial, ModbusInput modbus)
         {
             double leftEngine = 0;
@@ -256,7 +270,7 @@ namespace serialread
                 oldRudder = rudder;
             }
 
-
+            //controller joystick
             void Joystick()
             {
                 if (serial.joystickZ > 0)
@@ -277,7 +291,7 @@ namespace serialread
 
                 rudder = serial.joystickX;
             }
-
+            //cotroller for joystick and wheel
             void JoystickWheel()
             {
                 if (serial.joystickX > 0)
@@ -298,7 +312,7 @@ namespace serialread
 
                 rudder = modbus.wheel;
             }
-            
+            //control of lever and wheel
             void LeverWheel()
             {
                 leftEngine = modbus.leftHandle;
@@ -306,7 +320,7 @@ namespace serialread
                 rudder = modbus.wheel;
             }
         }
-
+        //change of controlls
         private void ChangeControls(SerialInput serial)
         {
             int joystick = Properties.Settings.Default.SwitchToJoystick;
@@ -321,7 +335,7 @@ namespace serialread
 
         }
 
-
+        //change to other boat
         private void ChangeBoat(SerialInput serial)
         {
             int changeBoatButton = Properties.Settings.Default.ChangeBoat;
@@ -330,7 +344,7 @@ namespace serialread
                 websocket.SelectNextBoat();
             }
         }
-
+        //deselect boat
         private void DeselectBoat(SerialInput serial)
         {
             int deselectBoatButton = Properties.Settings.Default.DeselectBoat;
@@ -339,7 +353,7 @@ namespace serialread
                 websocket.DeselectBoat();
             }
         }
-
+        //change navigationmode
         private void ChangeNavigationMode(SerialInput serial)
         {
             int changeToDeskMode = Properties.Settings.Default.ChangeToDeskMode;
@@ -347,21 +361,19 @@ namespace serialread
             int changeToGPSMode = Properties.Settings.Default.ChangeToGPSMode;
             if(changeToDeskMode == serial.buttons)
             {
-                //
+                websocket.ChangeToDeskMode();
             }
             else if(changeToGPSMode == serial.buttons)
             {
-                //
+                websocket.ChangeToGpsMode();
             }
             else if(changeToQuayMode == serial.buttons)
             {
-                //
+                websocket.ChangeToQuayMode();
             }
         }
     }
 }
-
-
 
 
 

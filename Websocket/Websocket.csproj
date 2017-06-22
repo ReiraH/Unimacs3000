@@ -47,7 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Websocket.Program</StartupObject>
+    <StartupObject>Websocket.TestWebsocket</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EngineIoClientDotNet, Version=0.9.22.0, Culture=neutral, processorArchitecture=MSIL">
@@ -80,7 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="TestWebsocket.cs" />
     <Compile Include="Webscoket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -69,13 +69,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ModBusReader\ModBusReader.csproj">
-      <Project>{46712564-0F52-4631-A807-B6E689389F91}</Project>
-      <Name>ModBusReader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Serialread\Serialread.csproj">
+    <ProjectReference Include="..\Serialread\InputController.csproj">
       <Project>{bfcddf14-21c2-4ea0-8c96-cf829b9d92c6}</Project>
-      <Name>Serialread</Name>
+      <Name>InputController</Name>
     </ProjectReference>
     <ProjectReference Include="..\Websocket\Websocket.csproj">
       <Project>{056c0a56-b17b-4cb8-8972-d7b0d9ea4f81}</Project>
