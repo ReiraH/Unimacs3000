@@ -11,17 +11,12 @@ namespace Unimacs_3000.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Mvc;
-
-    public partial class ScreenSetting
-    {
-        public int id { get; set; }
-        public System.DateTime timestamp { get; set; }
-        public Nullable<int> page_id { get; set; }
-        public Nullable<int> screen_id { get; set; }
     
-        public virtual Page Page { get; set; }
-        public virtual Screen Screen { get; set; }
-        public List<SelectListItem> SelectListItems = new List<SelectListItem>();
+    public partial class Boat
+    {
+        public string id { get; set; }
+        public string Name { get; set; }
+        public string ControlMode { get; set; }
+        public byte isActive { get; set; }
     }
 }

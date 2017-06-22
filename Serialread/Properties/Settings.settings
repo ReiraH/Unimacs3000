@@ -17,5 +17,20 @@
     <Setting Name="SwitchToLeverWheel" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">13</Value>
     </Setting>
+    <Setting Name="ChangeBoat" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">17</Value>
+    </Setting>
+    <Setting Name="DeselectBoat" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">16</Value>
+    </Setting>
+    <Setting Name="ChangeToQuayMode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="ChangeToGPSMode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="ChangeToDeskMode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
