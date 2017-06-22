@@ -102,14 +102,14 @@ namespace serialread
 
                     //deadzone en conversion naar een double tussen -1 en 1
                     if (switchX == '1') { joystickX = 0; }
-                    else { joystickX = Map(rawJoystickX, -950, 1100, -1, 1); }
+                    else { joystickX = Map(rawJoystickX, -900, 1040, -1, 1); }
 
                     if (switchY == '1') { joystickY = 0; }
-                    else { joystickY = Map(rawJoystickY, -900, 900, -1, 1); }
+                    else { joystickY = Map(rawJoystickY, -800, 875, -1, 1); }
 
                     //cable is loose so I set it to 2 so it will always be false
                     if (switchZ == '2') { joystickZ = 0; }
-                    else { joystickZ = Map(rawJoystickZ, -850, 950, -1, 1); }
+                    else { joystickZ = Map(rawJoystickZ, -820, 920, -1, 1); }
 
                     //create new input object
                     SerialInput newSerialInput = new SerialInput()
