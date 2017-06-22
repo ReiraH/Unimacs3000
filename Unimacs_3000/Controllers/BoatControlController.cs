@@ -9,35 +9,32 @@ namespace Unimacs_3000.Controllers
 {
     public class BoatControlController : Controller
     {
-        UnimacsContext db = new UnimacsContext();
+        private UnimacsContext db = new UnimacsContext();
         // GET: Simulatie
         public ActionResult Index()
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult CheckBoatData(double[] oldValues)
+        // POST : /BoatControl/CheckBoatData
+        [HttpGet]
+        public ActionResult CheckBoatData()
         {
+            //Get boatmotion based on the timestamp (newest)
             BoatMotion boatMotion = db.BoatMotions.OrderByDescending(sd => sd.Timestamp).First();
+            //Round values on 2 decimals so we can visualise them using progressbar.js
             Double leftEngine = Math.Round(boatMotion.LeftEngineValue, 2);
             Double rightEngine = Math.Round(boatMotion.RightEngineValue, 2);
             Double rudder = Math.Round(boatMotion.RudderValue, 2);
-
-            if (oldValues != null)
-            {
-                if (leftEngine == oldValues[0] && rightEngine == oldValues[1] && rudder == oldValues[2])
+            //Json object terug sturen naar de view met de boat motion data
+            return Json
+            (
+                new
                 {
-                    return Json(new { result = "DoNothing" });
+                    leftEngine = leftEngine,
+                    rightEngine = rightEngine,
+                    rudder = rudder,
                 }
-            }
-            return Json(new
-            {
-                result = "UpdateData",
-                leftEngine = Math.Round(boatMotion.LeftEngineValue, 2),
-                rightEngine = Math.Round(boatMotion.RightEngineValue, 2),
-                rudder = Math.Round(boatMotion.RudderValue, 2),
-            }
-            );     
+            );
         }
     }
 }

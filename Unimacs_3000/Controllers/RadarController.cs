@@ -8,7 +8,7 @@ namespace Unimacs_3000.Controllers
 {
     public class RadarController : Controller
     {
-        // GET: Radar
+        // GET: Radar/Index
         public ActionResult Index()
         {
             return View();

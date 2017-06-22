@@ -9,8 +9,8 @@ namespace Unimacs_3000.Controllers
 {
     public class HomeController : Controller
     {
-        UnimacsContext db = new UnimacsContext();
-
+        // GET : /Home/Index
+        //Standard Homepage of the web application
         public ActionResult Index()
         {
             return View();

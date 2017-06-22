@@ -8,8 +8,10 @@ namespace Unimacs_3000.Helpers
 {
     public class DistinctSensordataComparer : IEqualityComparer<SensorData>
     {
+        //Custom EqualityComparer
         public bool Equals(SensorData x, SensorData y)
         {
+            //Compare only on sensorname
             return x.sensor_name == y.sensor_name;
         }
 
