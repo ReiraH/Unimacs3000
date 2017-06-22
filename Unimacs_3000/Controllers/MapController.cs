@@ -8,7 +8,7 @@ namespace Unimacs_3000.Controllers
 {
     public class MapController : Controller
     {
-        // GET: Map
+        // GET: Map/Index
         public ActionResult Index()
         {
             return View();

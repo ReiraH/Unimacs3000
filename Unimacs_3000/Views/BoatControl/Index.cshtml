@@ -13,13 +13,16 @@
         <p id="progressBarlabel">Rightengine</p>
     </div>
 </div>
+
 <div id="rudderBarParentContainer">
     <div id="rudderBarContainer"></div>
     <p id="rudderBarlabel">Rudder</p>
 </div>
+
 <script type="text/javascript">
     $(document).ready(function () {
-        updateBoatControlData(0,0,0);
+        //Create 2 progressbars for each motor, because we need one for the positive values and one for the negative values
+        //USING progressbar.js see : http://progressbarjs.readthedocs.io/en/latest/
         var leftEngineBar_positive = new ProgressBar.Line(leftEngineBarContainer_positive, {
             strokeWidth: 1,
             easing: 'easeInOut',
@@ -78,6 +81,7 @@
             }
         });
 
+        //Create a circular progressbar for the rudder
         var rudderBar = new ProgressBar.Circle(rudderBarContainer, {
             color: '#aaa',
             // This has to be the same size as the maximum width to
@@ -105,28 +109,38 @@
             }
         });
 
-        function updateBoatControlData(oldLeftEngineValue,oldRightEngineValue,oldRudderValue) {
-        var options = {};
-        options.url = '@Url.Action("checkBoatData", "BoatControl")';
-        options.type = "POST";
-        options.dataType = "json";
-        options.data = { "oldValues": [oldLeftEngineValue, oldRightEngineValue, oldRudderValue] };
-        options.success = function (response) {
-            if (response.result == 'UpdateData')
+        //Initial updateBoatControlData function call to start the polling
+        updateBoatControlData(0, 0, 0);
+
+        //This is the function that GETs data from the controller and updates the progressbar
+        function updateBoatControlData() {
+            var options = {};
+            //set the options for the http request to the controller
+            options.url = '@Url.Action("checkBoatData", "BoatControl")';
+            options.type = "GET";
+            options.dataType = "json";
+            options.success = function (response)
             {
+                //get the values out of the response
                 var leftEngineValue = response.leftEngine;
                 var rightEngineValue = response.rightEngine;
                 var rudderValue = response.rudder;
+                //check if left engine value > 0 -> positive
                 if (leftEngineValue > 0)
                 {
+                    //set the negative progress bar to zero
                     leftEngineBar_negative.set(0);
+                    //Multiply positive leftenginevalue with -1 to make it zero, this is because the progress is rotated
                     leftEngineBar_positive.set(leftEngineValue * -1);
                 }
                 else
                 {
+                    //set the postive progress bar to zero
                     leftEngineBar_positive.set(0);
+                    //Multiply negative leftengine value with -1 to make it positive
                     leftEngineBar_negative.set(leftEngineValue * -1);                    
                 }
+                //check if right engine value > 0 -> positive
                 if (rightEngineValue > 0)
                 {
                     rightEngineBar_negative.set(0);
@@ -137,22 +151,18 @@
                     rightEngineBar_positive.set(0);
                     rightEngineBar_negative.set(rightEngineValue * -1);
                 }
+                //set rudder value
                 rudderBar.set(rudderValue);
-                setTimeout(updateBoatControlData(leftEngineValue, rightEngineValue, rudderValue), 100);
-            }
-            else if (response.result == 'DoNothing')
+                //call this function again -> polling with 100ms delay
+                setTimeout(updateBoatControlData, 100);
+            };
+            options.error = function (xhr, status, error)
             {
-                setTimeout(updateBoatControlData(leftEngineValue, rightEngineValue,rudderValue), 100);
-            }
-        };
-        options.error = function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            alert(err.Message);
-        };
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+            };
+            //Do the get chechboatdata request
             $.ajax(options)
-        }
-        function isFloat(n) {
-            return Number(n) === n && n % 1 !== 0;
         }
     });
 </script>
