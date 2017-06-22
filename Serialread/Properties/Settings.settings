@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ComPoort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM4</Value>
+      <Value Profile="(Default)">COM1</Value>
     </Setting>
     <Setting Name="ControlMode" Type="System.String" Scope="User">
       <Value Profile="(Default)">joystickWheel</Value>

@@ -25,7 +25,7 @@ namespace serialread.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM1")]
         public string ComPoort {
             get {
                 return ((string)(this["ComPoort"]));
