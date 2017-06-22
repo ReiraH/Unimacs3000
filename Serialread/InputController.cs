@@ -361,15 +361,15 @@ namespace serialread
             int changeToGPSMode = Properties.Settings.Default.ChangeToGPSMode;
             if(changeToDeskMode == serial.buttons)
             {
-                //
+                websocket.ChangeToDeskMode();
             }
             else if(changeToGPSMode == serial.buttons)
             {
-                //
+                websocket.ChangeToGpsMode();
             }
             else if(changeToQuayMode == serial.buttons)
             {
-                //
+                websocket.ChangeToQuayMode();
             }
         }
     }

@@ -1,0 +1,64 @@
+﻿<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewContext.RouteData.Values["controller"] - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var heights = window.innerHeight - 50;
+        if (window.location.pathname == "Map")
+        {
+            document.getElementById("iframeMap").style.height = heights + "px";
+        }
+        setTimeout(CheckStatus, 500);
+    });
+    function CheckStatus() {
+        var options = {};
+        options.url = '@Url.Action("checkCurrentScreenPage", "Settings")';
+        options.type = "POST";
+        options.dataType = "json";
+        options.data = {"currentController" : window.location.pathname };
+        options.success = function (response) {
+            if (response.result == 'Redirect')
+            {
+                window.location.href = response.url;
+            }
+            else if (response.result == 'DoNothing')
+            {
+                setTimeout(CheckStatus, 500);
+            }
+        };
+        options.error = function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            alert(err.Message);
+        };
+        $.ajax(options)
+    }
+    </script>
+</head>
+<body">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <!--NAME, CSHTML, FOLDER-->
+                    <li>@Html.ActionLink("BoatControl", "ChangePage", "Settings", new { newPage = "BoatControl" }, null)</li>
+                    <li>@Html.ActionLink("Video", "ChangePage", "Settings", new { newPage = "Video" }, null)</li>
+                    <li>@Html.ActionLink("Radar", "ChangePage", "Settings", new { newPage = "Radar" }, null)</li>
+                    <li>@Html.ActionLink("Map", "ChangePage", "Settings", new { newPage = "Map" }, null)</li>
+                    <li>@Html.ActionLink("Sensordata", "ChangePage", "Settings", new { newPage = "Sensordata" }, null)</li>
+                    <li>@Html.ActionLink("Settings", "ChangePage", "Settings", new { newPage = "Settings" },null)</li>
+                </ul>
+                <p class="nav navbar-text navbar-right">Computer : @User.Identity.Name!</p>
+            </div>
+        </div>
+    </div>

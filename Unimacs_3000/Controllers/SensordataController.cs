@@ -11,13 +11,14 @@ namespace Unimacs_3000.Controllers
 {
     public class SensordataController : Controller
     {
-        //initialiseer onze database
-        UnimacsContext db = new UnimacsContext();
-        // GET: Sensordata
-
+        //initialise database
+        private UnimacsContext db = new UnimacsContext();
+        // GET: Sensordata/Index
         public ActionResult Index(List<SensorData> data)
         {
-            //laat index pagina zien
+            //Get all sensor data and sort by newest
+            //After this distinct the values based on name (see DitinctSensordataComparer in Helpers folder)
+            //Show view with sensordata
             return View(db.SensorDatas.OrderByDescending(sd => sd.timestamp).ToList().Distinct(new DistinctSensordataComparer()).ToList());
         }
     }
