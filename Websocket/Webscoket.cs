@@ -132,6 +132,14 @@ namespace Websocket
                 socket.Emit("getBoats");
             });
 
+            //message from the server indicating that the authentication process failed.
+            socket.On("unautherized", (data) =>
+            {
+                Console.WriteLine("Server did not accept the Login Token!");
+                Console.WriteLine("Message from the server:");
+                Console.WriteLine(data);
+            });
+
             //message from the server containing a list of all the connected boats.
             socket.On("getBoats", (data) =>
             {
