@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Websocket
 {
-    class Program
+    class TestWebsocket
     {
         static void Main(String[] Args)
         {
