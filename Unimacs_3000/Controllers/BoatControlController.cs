@@ -17,15 +17,15 @@ namespace Unimacs_3000.Controllers
         }
         // POST : /BoatControl/CheckBoatData
         [HttpGet]
-        public ActionResult CheckBoatData()
+        public ActionResult getBoatData()
         {
             //Get boatmotion based on the timestamp (newest)
-            BoatMotion boatMotion = db.BoatMotions.OrderByDescending(sd => sd.Timestamp).First();
+            BoatMotion boatMotion = db.BoatMotions.OrderByDescending(sd => sd.timestamp).First();
             //Round values on 2 decimals so we can visualise them using progressbar.js
-            Double leftEngine = Math.Round(boatMotion.LeftEngineValue, 2);
-            Double rightEngine = Math.Round(boatMotion.RightEngineValue, 2);
-            Double rudder = Math.Round(boatMotion.RudderValue, 2);
-            //Json object terug sturen naar de view met de boat motion data
+            Double leftEngine = Math.Round(boatMotion.left_engine_value, 2);
+            Double rightEngine = Math.Round(boatMotion.right_engine_value, 2);
+            Double rudder = Math.Round(boatMotion.rudder_value, 2);
+            //return json object back to the view
             return Json
             (
                 new

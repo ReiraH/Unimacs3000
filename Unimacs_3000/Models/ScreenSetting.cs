@@ -22,6 +22,7 @@ namespace Unimacs_3000.Models
     
         public virtual Page Page { get; set; }
         public virtual Screen Screen { get; set; }
+
         public List<SelectListItem> SelectListItems = new List<SelectListItem>();
     }
 }

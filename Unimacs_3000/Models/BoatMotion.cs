@@ -15,9 +15,9 @@ namespace Unimacs_3000.Models
     public partial class BoatMotion
     {
         public int id { get; set; }
-        public double LeftEngineValue { get; set; }
-        public double RightEngineValue { get; set; }
-        public double RudderValue { get; set; }
-        public System.DateTime Timestamp { get; set; }
+        public double left_engine_value { get; set; }
+        public double right_engine_value { get; set; }
+        public double rudder_value { get; set; }
+        public System.DateTime timestamp { get; set; }
     }
 }

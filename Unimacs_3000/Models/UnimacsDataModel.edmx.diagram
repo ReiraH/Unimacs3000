@@ -11,8 +11,8 @@
         <EntityTypeShape EntityType="UnimacsModelNamespace.SensorData" Width="1.5" PointX="3.875" PointY="3.375" IsExpanded="true" />
         <AssociationConnector Association="UnimacsModelNamespace.FK_ScreenSettings_Pages" ManuallyRouted="false" />
         <AssociationConnector Association="UnimacsModelNamespace.FK_ScreenSettings_Screens" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="UnimacsModelNamespace.BoatMotion" Width="1.5" PointX="5.375" PointY="0.75" />
-        <EntityTypeShape EntityType="UnimacsModelNamespace.Boat" Width="1.5" PointX="6.5" PointY="3.5" />
+        <EntityTypeShape EntityType="UnimacsModelNamespace.Boat" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="UnimacsModelNamespace.BoatMotion" Width="1.5" PointX="5.875" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

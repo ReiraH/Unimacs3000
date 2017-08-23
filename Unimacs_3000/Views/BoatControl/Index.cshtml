@@ -125,7 +125,7 @@
         function updateBoatControlData() {
             var options = {};
             //set the options for the http request to the controller
-            options.url = '@Url.Action("checkBoatData", "BoatControl")';
+            options.url = '@Url.Action("getBoatData", "BoatControl")';
             options.type = "GET";
             options.dataType = "json";
             options.success = function (response)
@@ -171,7 +171,7 @@
                 var err = eval("(" + xhr.responseText + ")");
                 alert(err.Message);
             };
-            //Do the get chechboatdata request
+            //Do the get checkboatdata request
             $.ajax(options)
         }
     });

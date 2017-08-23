@@ -15,8 +15,8 @@ namespace Unimacs_3000.Models
     public partial class Boat
     {
         public string id { get; set; }
-        public string Name { get; set; }
-        public string ControlMode { get; set; }
-        public byte isActive { get; set; }
+        public string name { get; set; }
+        public string control_mode { get; set; }
+        public Nullable<byte> isActive { get; set; }
     }
 }

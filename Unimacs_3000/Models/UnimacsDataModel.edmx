@@ -10,19 +10,19 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="250" />
-          <Property Name="ControlMode" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="isActive" Type="tinyint" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="150" />
+          <Property Name="control_mode" Type="varchar" MaxLength="50" />
+          <Property Name="isActive" Type="tinyint" />
         </EntityType>
         <EntityType Name="BoatMotion">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LeftEngineValue" Type="float" Nullable="false" />
-          <Property Name="RightEngineValue" Type="float" Nullable="false" />
-          <Property Name="RudderValue" Type="float" Nullable="false" />
-          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="left_engine_value" Type="float" />
+          <Property Name="right_engine_value" Type="float" />
+          <Property Name="rudder_value" Type="float" />
+          <Property Name="timestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Pages">
           <Key>
@@ -175,27 +175,27 @@
             <End Role="Screens" EntitySet="Screens" />
             <End Role="ScreenSettings" EntitySet="ScreenSettings" />
           </AssociationSet>
-          <EntitySet Name="BoatMotions" EntityType="UnimacsModelNamespace.BoatMotion" />
           <EntitySet Name="Boats" EntityType="UnimacsModelNamespace.Boat" />
+          <EntitySet Name="BoatMotions" EntityType="UnimacsModelNamespace.BoatMotion" />
         </EntityContainer>
-        <EntityType Name="BoatMotion">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LeftEngineValue" Type="Double" Nullable="false" />
-          <Property Name="RightEngineValue" Type="Double" Nullable="false" />
-          <Property Name="RudderValue" Type="Double" Nullable="false" />
-          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         <EntityType Name="Boat">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ControlMode" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="isActive" Type="Byte" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="control_mode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Byte" />
+        </EntityType>
+        <EntityType Name="BoatMotion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="left_engine_value" Type="Double" />
+          <Property Name="right_engine_value" Type="Double" />
+          <Property Name="rudder_value" Type="Double" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -240,23 +240,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BoatMotions">
-            <EntityTypeMapping TypeName="UnimacsModelNamespace.BoatMotion">
-              <MappingFragment StoreEntitySet="BoatMotion">
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="RudderValue" ColumnName="RudderValue" />
-                <ScalarProperty Name="RightEngineValue" ColumnName="RightEngineValue" />
-                <ScalarProperty Name="LeftEngineValue" ColumnName="LeftEngineValue" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Boats">
             <EntityTypeMapping TypeName="UnimacsModelNamespace.Boat">
               <MappingFragment StoreEntitySet="Boat">
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="ControlMode" ColumnName="ControlMode" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="control_mode" ColumnName="control_mode" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BoatMotions">
+            <EntityTypeMapping TypeName="UnimacsModelNamespace.BoatMotion">
+              <MappingFragment StoreEntitySet="BoatMotion">
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="rudder_value" ColumnName="rudder_value" />
+                <ScalarProperty Name="right_engine_value" ColumnName="right_engine_value" />
+                <ScalarProperty Name="left_engine_value" ColumnName="left_engine_value" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

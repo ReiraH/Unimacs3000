@@ -35,11 +35,22 @@ namespace Unimacs_3000.Controllers
         {
             //Get current authenticated username
             String userName = User.Identity.Name.Split('\\')[1];
+            String pageName = "";
+            //TESTPURPOSES
+            userName = "unimacs001";
             //Get page of the current username in the database
             var view = from p in db.ScreenSettings
                        where p.Screen.computer_name == userName
                        select p.Page;
-            String pageName = view.First().page_name;
+
+            try
+            {
+                pageName = view.First().page_name;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             //If the control did not change do nothing , or else sent redirect this screen to new page
             if (currentController.Contains(pageName))
             {
@@ -85,6 +96,8 @@ namespace Unimacs_3000.Controllers
         public ActionResult ChangePage(string newPage)
         {
             String userName = User.Identity.Name.Split('\\')[1];
+            //TESTPURPOSES
+            userName = "unimacs001";
             //Get page of the current username in the database
             var currentScreenSettingID = (from p in db.ScreenSettings
                                           where p.Screen.computer_name == userName

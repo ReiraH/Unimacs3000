@@ -29,7 +29,7 @@ namespace Unimacs_3000.Models
         public virtual DbSet<Screen> Screens { get; set; }
         public virtual DbSet<ScreenSetting> ScreenSettings { get; set; }
         public virtual DbSet<SensorData> SensorDatas { get; set; }
-        public virtual DbSet<BoatMotion> BoatMotions { get; set; }
         public virtual DbSet<Boat> Boats { get; set; }
+        public virtual DbSet<BoatMotion> BoatMotions { get; set; }
     }
 }
