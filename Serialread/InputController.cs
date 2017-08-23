@@ -30,7 +30,7 @@ namespace serialread
         }
 
 
-        private Websocket.OnlineWebsocket websocket;
+        private Websocket.Websocket websocket;
         private SerialInput serialInput = new SerialInput();
         private ModbusInput modbusInput = new ModbusInput();
         private double oldLeftEngine = 2;
@@ -42,7 +42,7 @@ namespace serialread
         /*
          * 
         */
-        public InputController(Websocket.OnlineWebsocket websocket)
+        public InputController(Websocket.Websocket websocket)
         {
             this.websocket = websocket;
 
@@ -327,16 +327,25 @@ namespace serialread
             int joystickWheel = Properties.Settings.Default.SwitchToJoystickWheel;
             int leverWheel = Properties.Settings.Default.SwitchToLeverWheel;
             if (serial.buttons == joystick)
+            {
                 Properties.Settings.Default.ControlMode = "joystick";
+                Console.WriteLine("Changed to Joystick mode");
+            }
             else if (serial.buttons == joystickWheel)
+            {
                 Properties.Settings.Default.ControlMode = "joystickWheel";
+                Console.WriteLine("Changed to Joystick+Wheel mode");
+            }
             else if (serial.buttons == leverWheel)
+            {
                 Properties.Settings.Default.ControlMode = "leverWheel";
+                Console.WriteLine("Changed to Lever mode");
+            }
 
-        }
+            }
 
-        //change to other boat
-        private void ChangeBoat(SerialInput serial)
+            //change to other boat
+            private void ChangeBoat(SerialInput serial)
         {
             int changeBoatButton = Properties.Settings.Default.ChangeBoat;
             if(serial.buttons == changeBoatButton && serial.buttons!= oldButton)

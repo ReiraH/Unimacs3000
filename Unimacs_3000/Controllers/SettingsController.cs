@@ -37,7 +37,6 @@ namespace Unimacs_3000.Controllers
             String userName = User.Identity.Name.Split('\\')[1];
             String pageName = "";
             //TESTPURPOSES
-            userName = "unimacs001";
             //Get page of the current username in the database
             var view = from p in db.ScreenSettings
                        where p.Screen.computer_name == userName
@@ -97,7 +96,6 @@ namespace Unimacs_3000.Controllers
         {
             String userName = User.Identity.Name.Split('\\')[1];
             //TESTPURPOSES
-            userName = "unimacs001";
             //Get page of the current username in the database
             var currentScreenSettingID = (from p in db.ScreenSettings
                                           where p.Screen.computer_name == userName

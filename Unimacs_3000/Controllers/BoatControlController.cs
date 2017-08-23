@@ -30,11 +30,11 @@ namespace Unimacs_3000.Controllers
             (
                 new
                 {
-                    leftEngine = leftEngine,
-                    rightEngine = rightEngine,
-                    rudder = rudder,
+                    left_engine_value = leftEngine,
+                    right_engine_value = rightEngine,
+                    rudder_value = rudder,
                 }
-            );
+            , JsonRequestBehavior.AllowGet);
         }
     }
 }

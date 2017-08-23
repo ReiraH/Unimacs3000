@@ -13,15 +13,16 @@ namespace Websocket
 {
     public abstract class Websocket
     {
-
+        public abstract void ControlBoat(double leftEngine, double rightEngine, double rudder);
+        public abstract void SelectNextBoat();
+        public abstract void DeselectBoat();
+        public abstract void ChangeToDeskMode();
+        public abstract void ChangeToGpsMode();
+        public abstract void ChangeToQuayMode();
     }
 
     public class DummyWebsocket : Websocket
     {
-        private Boat selectedBoat;
-        private List<Boat> connectedBoats = new List<Boat>();
-        private UnimacsContext db = new UnimacsContext();
-
         /// <summary>
         /// Object to serialize JSON messages to control a boat.
         /// </summary>
@@ -35,52 +36,12 @@ namespace Websocket
                 public double leftEngine;
                 public double rightEngine;
                 public double rudder;
-                public bool followQuay;
-                public bool followCoords;
-                public List<Tuple<double, double>> goalLocation;    //List of waypoints containing latitudes and longitudes.
+
             }
 
-        }
+        } 
 
-        /// <summary>
-        /// Object to deserialize the response from the server containing the login token.
-        /// </summary>
-        public class LoginToken
-        {
-            public string error;        //0 on no error, otherwise containing an error message.
-            public Payload payload;
-
-            public class Payload
-            {
-                public string token;    //token needed to authenticate the socket connection.
-            }
-        }
-
-        /// <summary>
-        /// Object to deserialize a JSON message from the server containing a list of all currently connected boats.
-        /// </summary>
-        public class BoatsMessage
-        {
-            public List<Boat> boats;
-        }
-
-        /// <summary>
-        /// Object to deserialize a JSON message from the server containing a boat that connects or disconnects from the server.
-        /// </summary>
-        public class BoatMessage
-        {
-            public Boat boat;
-        }
-
-        /// <summary>
-        /// Object respresenting a boat. Contains an ID, name and the current mode. The mode can be "manual" for direct control, "gps" for gps control or "quay" for autonomously following the quay.
-        /// </summary>
-        public class Boat
-        {
-            public string id;
-            public string name;
-            public string mode = "manual";
-        }
+        private UnimacsContext db = new UnimacsContext();
 
         /// <summary>
         /// Create a websocket connection with the server.
@@ -101,7 +62,7 @@ namespace Websocket
         /// <summary>
         /// Set the next boat in the connected boat list as active, so that boat can be controlled.
         /// </summary>
-        public void SelectNextBoat()
+        public override void SelectNextBoat()
         {
             Console.WriteLine("Dummy websocket next boat selected");
         }
@@ -109,7 +70,7 @@ namespace Websocket
         /// <summary>
         /// Set all boats to inactive, so no boats can be controlled.
         /// </summary>
-        public void DeselectBoat()
+        public override void DeselectBoat()
         {
             Console.WriteLine("Dummy websocket boat deselected");
         }
@@ -117,7 +78,7 @@ namespace Websocket
         /// <summary>
         /// Set the currently selected boat to manual control. The selected boat can not be controlled via the <c>ControlBoat</c> function.
         /// </summary>
-        public void ChangeToDeskMode()
+        public override void ChangeToDeskMode()
         {
             Console.WriteLine("Dummy websocket changed to desk mode");
         }
@@ -125,7 +86,7 @@ namespace Websocket
         /// <summary>
         /// Set the currently selected boat to GPS control. The selected boat can now be controlled via the <c>setGpsCoordinates</c> function.
         /// </summary>
-        public void ChangeToGpsMode()
+        public override void ChangeToGpsMode()
         {
             Console.WriteLine("Dummy websocket changed to gps mode");
         }
@@ -133,7 +94,7 @@ namespace Websocket
         /// <summary>
         /// Set the currently selected boat to Quay mode. The boat will now follow the quay using its ultrasound sensors.
         /// </summary>
-        public void ChangeToQuayMode()
+        public override void ChangeToQuayMode()
         {
             Console.WriteLine("Dummy websocket changed to quay mode");
         }
@@ -144,29 +105,42 @@ namespace Websocket
         /// <param name="leftEngine">Power of the left engine. Expects a value between -1 for full backwards and 1 for full forwards.</param>
         /// <param name="rightEngine">Power of the right engine. Expects a value between -1 for full backwards and 1 for full forwards.</param>
         /// <param name="rudder">Move the rudder to steer te boat. Expects a value between -1 for full toward portside and 1 for full towards starboard.</param>
-        public void ControlBoat(double leftEngine, double rightEngine, double rudder)
+        public override void ControlBoat(double leftEngine, double rightEngine, double rudder)
         {
-                //check input
-                if (leftEngine < -1 || leftEngine > 1 || rightEngine < -1 || rightEngine > 1 || rudder < -1 || rudder > 1)
+            //check input
+            if (leftEngine < -1 || leftEngine > 1 || rightEngine < -1 || rightEngine > 1 || rudder < -1 || rudder > 1)
+            {
+                leftEngine = Math.Max(-1, leftEngine);
+                leftEngine = Math.Min(1, leftEngine);
+                rightEngine = Math.Max(-1, rightEngine);
+                rightEngine = Math.Min(1, rightEngine);
+                rudder = Math.Max(-1, rudder);
+                rudder = Math.Min(1, rudder);
+            }
+            //make JSON message
+            MotionMessage message = new MotionMessage()
+            {
+                boat = "Dummy Boat",
+                motion = new MotionMessage.Motion()
                 {
-                    leftEngine = Math.Max(-1, leftEngine);
-                    leftEngine = Math.Min(1, leftEngine);
-                    rightEngine = Math.Max(-1, rightEngine);
-                    rightEngine = Math.Min(1, rightEngine);
-                    rudder = Math.Max(-1, rudder);
-                    rudder = Math.Min(1, rudder);
+                    leftEngine = leftEngine,
+                    rightEngine = rightEngine,
+                    rudder = rudder
                 }
+            };
 
-                //save the control info in the database so it can be shown on the webapplication.
-                BoatMotion boatMotion = new BoatMotion()
-                {
-                    left_engine_value = leftEngine,
-                    right_engine_value = rightEngine,
-                    rudder_value = rudder,
-                    timestamp = DateTime.Now
-                };
-                db.BoatMotions.Add(boatMotion);
-                db.SaveChanges();
+            string json = JsonConvert.SerializeObject(message, Formatting.Indented);
+            Console.WriteLine(json);
+            //save the control info in the database so it can be shown on the webapplication.
+            BoatMotion boatMotion = new BoatMotion()
+            {
+                left_engine_value = leftEngine,
+                right_engine_value = rightEngine,
+                rudder_value = rudder,
+                timestamp = DateTime.Now
+            };
+            db.BoatMotions.Add(boatMotion);
+            db.SaveChanges();
            
         }
 
@@ -401,7 +375,7 @@ namespace Websocket
         /// <summary>
         /// Set the next boat in the connected boat list as active, so that boat can be controlled.
         /// </summary>
-        public void SelectNextBoat()
+        public override void SelectNextBoat()
         {
             if (connectedBoats.Count > 0)
             {
@@ -414,7 +388,7 @@ namespace Websocket
         /// <summary>
         /// Set all boats to inactive, so no boats can be controlled.
         /// </summary>
-        public void DeselectBoat()
+        public override void DeselectBoat()
         {
             selectedBoat = null;
         }
@@ -422,7 +396,7 @@ namespace Websocket
         /// <summary>
         /// Set the currently selected boat to manual control. The selected boat can not be controlled via the <c>ControlBoat</c> function.
         /// </summary>
-        public void ChangeToDeskMode()
+        public override void ChangeToDeskMode()
         {
             selectedBoat.mode = "manual";
         }
@@ -430,7 +404,7 @@ namespace Websocket
         /// <summary>
         /// Set the currently selected boat to GPS control. The selected boat can now be controlled via the <c>setGpsCoordinates</c> function.
         /// </summary>
-        public void ChangeToGpsMode()
+        public override void ChangeToGpsMode()
         {
             selectedBoat.mode = "gps";
         }
@@ -438,7 +412,7 @@ namespace Websocket
         /// <summary>
         /// Set the currently selected boat to Quay mode. The boat will now follow the quay using its ultrasound sensors.
         /// </summary>
-        public void ChangeToQuayMode()
+        public override void ChangeToQuayMode()
         {
             selectedBoat.mode = "quay";
             MotionMessage message = new MotionMessage()
@@ -471,7 +445,7 @@ namespace Websocket
         /// <param name="leftEngine">Power of the left engine. Expects a value between -1 for full backwards and 1 for full forwards.</param>
         /// <param name="rightEngine">Power of the right engine. Expects a value between -1 for full backwards and 1 for full forwards.</param>
         /// <param name="rudder">Move the rudder to steer te boat. Expects a value between -1 for full toward portside and 1 for full towards starboard.</param>
-        public void ControlBoat(double leftEngine, double rightEngine, double rudder)
+        public override void ControlBoat(double leftEngine, double rightEngine, double rudder)
         {
             //only work in manual mode
             if (selectedBoat.mode == "manual")
