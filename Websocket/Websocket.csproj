@@ -80,7 +80,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestWebsocket.cs" />
     <Compile Include="Webscoket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

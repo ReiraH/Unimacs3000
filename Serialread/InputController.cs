@@ -30,7 +30,7 @@ namespace serialread
         }
 
 
-        private Websocket.Websocket websocket;
+        private Websocket.OnlineWebsocket websocket;
         private SerialInput serialInput = new SerialInput();
         private ModbusInput modbusInput = new ModbusInput();
         private double oldLeftEngine = 2;
@@ -42,7 +42,7 @@ namespace serialread
         /*
          * 
         */
-        public InputController(Websocket.Websocket websocket)
+        public InputController(Websocket.OnlineWebsocket websocket)
         {
             this.websocket = websocket;
 
